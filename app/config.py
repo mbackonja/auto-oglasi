@@ -1,0 +1,5 @@
+"""
+Config file
+"""
+
+DEBUG = True
