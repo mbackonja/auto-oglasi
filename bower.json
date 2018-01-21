@@ -1,0 +1,21 @@
+{
+  "name": "auto-oglasi",
+  "homepage": "https://github.com/mbackonja/auto-oglasi",
+  "authors": [
+    "Milan Bačkonja <milan.backonja@hotmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "^1.6.8"
+  }
+}
