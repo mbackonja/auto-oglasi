@@ -1,18 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Auto oglasi</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Auto oglasi</title>
+  <link rel="stylesheet" href="static/bower_components/bootstrap/dist/css/bootstrap.css">
+  <link rel="stylesheet" href="static/css/app.css">
 </head>
 <body ng-app="clientApp">
-    <a ng-href="#!/">Main</a>
-    <a ng-href="#!/test">Test</a>
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+    <a class="navbar-brand" href="#">Auto oglasi</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse" id="mainNavbar">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="#!/">Main</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#!/test">Test</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  
+  <main role="main" class="container">
     <div ng-view></div>
+  </main>
 
-    <script src="static/bower_components/angular/angular.js"></script>
-    <script src="static/bower_components/angular-route/angular-route.js"></script>
-    <script src="static/js/client/app.js"></script>
+  <script src="static/bower_components/angular/angular.js"></script>
+  <script src="static/bower_components/angular-route/angular-route.js"></script>
+  <script src="static/bower_components/jquery/dist/jquery.js"></script>
+  <script src="static/bower_components/bootstrap/dist/js/bootstrap.js"></script>
+  <script src="static/js/client/app.js"></script>
 </body>
 </html>
