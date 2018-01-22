@@ -3,7 +3,7 @@ app.directive('ad', () => {
     templateUrl: 'static/components/client/ad/ad.component.html',
     restrict: 'E',
     scope: {
-      mark: '@'
+      product: '='
     }
   }
 })
