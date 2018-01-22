@@ -1,14 +1,16 @@
-var app = angular.module('clientApp', ['ngRoute'], function ($interpolateProvider) {
+let app = angular.module('clientApp', ['ngRoute'], ($interpolateProvider) => {
   $interpolateProvider.startSymbol('[[')
   $interpolateProvider.endSymbol(']]')
 })
 
-app.config(function ($routeProvider) {
+app.config(($routeProvider, $locationProvider) => {
   $routeProvider
     .when('/', {
-      templateUrl: 'static/partials/client/main.html'
+      templateUrl: 'static/components/client/main/main.component.html'
     })
     .when('/test', {
-      templateUrl: 'static/partials/client/test.html'
+      templateUrl: 'static/components/client/test/test.component.html'
     })
+
+  $locationProvider.html5Mode(true)
 })

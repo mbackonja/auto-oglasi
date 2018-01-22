@@ -1,6 +1,7 @@
 module.exports = {
   globals: {
-    angular: false
+    angular: false,
+    app: false
   },
   extends: [
     'standard'

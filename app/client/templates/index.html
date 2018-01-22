@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <base href="/">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -9,8 +10,8 @@
   <link rel="stylesheet" href="static/css/app.css">
 </head>
 <body ng-app="clientApp">
-  <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-    <a class="navbar-brand" href="#">Auto oglasi</a>
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top" ng-controller="NavbarController">
+    <a class="navbar-brand" href="/">Auto oglasi</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -18,10 +19,10 @@
     <div class="collapse navbar-collapse" id="mainNavbar">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-          <a class="nav-link" href="#!/">Main</a>
+          <a class="nav-link" ng-class="{ active: isActive('/')}" href="/">Main</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#!/test">Test</a>
+          <a class="nav-link" ng-class="{ active: isActive('/test')}" href="/test">Test</a>
         </li>
       </ul>
     </div>
@@ -36,5 +37,10 @@
   <script src="static/bower_components/jquery/dist/jquery.js"></script>
   <script src="static/bower_components/bootstrap/dist/js/bootstrap.js"></script>
   <script src="static/js/client/app.js"></script>
+
+  <script src="static/js/shared/navbar.controller.js"></script>
+
+  <script src="static/components/client/main/main.controller.js"></script>
+  <script src="static/components/client/ad/ad.controller.js"></script>
 </body>
 </html>
