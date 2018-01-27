@@ -1,0 +1,29 @@
+<div class="container" ng-controller="AuthController">
+  <div class="row justify-content-center">
+    <div class="col-md-5">
+      <form ng-submit="register()">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" class="form-control" id="name" placeholder="Enter name" ng-model="registerData.name" required>
+        </div>
+        <div class="form-group">
+          <label for="surname">Surname</label>
+          <input type="text" class="form-control" id="surname" placeholder="Enter surname" ng-model="registerData.surname" required>
+        </div>
+        <div class="form-group">
+          <label for="email">Email address</label>
+          <input type="email" class="form-control" id="email" placeholder="Enter email" ng-model="registerData.email" required>
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" class="form-control" id="password" placeholder="Enter password" ng-model="registerData.password" required>
+        </div>
+        <div class="form-group">
+          <label for="password-again">Password again</label>
+          <input type="password" class="form-control" id="password-again" placeholder="Enter password again" ng-model="registerData.passwordAgain" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Register</button>
+      </form>
+    </div>
+  </div>
+</div>

@@ -2,3 +2,4 @@ venv
 *.pyc
 .vscode
 node_modules
+app/settings.cfg
