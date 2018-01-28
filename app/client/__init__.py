@@ -2,7 +2,7 @@
 Client application routes
 """
 
-from flask import Blueprint, render_template, jsonify, request
+from flask import Blueprint, render_template, jsonify, request, session
 from flask_bcrypt import Bcrypt
 from app.common.mysql import mysql
 from app.common.invalid_usage_exception import InvalidUsage
@@ -17,7 +17,7 @@ def index():
     Return angular application
     """
 
-    return render_template('index.html')
+    return render_template('index.html', user=session.get('user'))
 
 @client.route('api/register', methods=['POST'])
 def register():
@@ -28,7 +28,7 @@ def register():
     database = mysql.get_db()
     cursor = database.cursor()
 
-    cursor.execute('SELECT id FROM users WHERE email=%s', (data['email']))
+    cursor.execute("SELECT id FROM users WHERE email=%s", (data['email']))
     cursor.fetchone()
     if cursor.rowcount != 0:
         raise InvalidUsage("User with same email already registered", 409)
@@ -48,8 +48,17 @@ def register():
     users(name, surname, email, password)
     VALUES(%s, %s, %s, %s)'''
 
-    hashed_password = bcrypt.generate_password_hash(data["password"])
-    cursor.execute(qurey, (data["name"], data["surname"], data["email"], hashed_password))
+    hashed_password = bcrypt.generate_password_hash(data['password'])
+    cursor.execute(qurey, (data['name'], data['surname'], data['email'], hashed_password))
 
     database.commit()
-    return jsonify({"message": "Successfully registered"}), 201
+    session['user'] = {'id': cursor.lastrowid, 'name': data['name'], 'surname': data['surname'], 'email': data['email']}
+    return jsonify({'message': 'Successfully registered'}), 201
+
+@client.route('api/logout', methods=['POST'])
+def logout():
+    """
+    Logout user
+    """
+    session.pop('user', None)
+    return jsonify({'message': 'Successfully logged out'})

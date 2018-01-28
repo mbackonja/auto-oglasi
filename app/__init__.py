@@ -2,7 +2,7 @@
 Main app module
 """
 
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, session
 from app.client import client
 from app.admin import admin
 from app.common.mysql import mysql
@@ -31,4 +31,4 @@ def catch_all(path): # pylint: disable=unused-argument
     """
     Catch all route
     """
-    return render_template('index.html')
+    return render_template('index.html', user=session.get('user'))
