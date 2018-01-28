@@ -8,11 +8,10 @@ app.controller('AuthController', ['$scope', '$http', ($scope, $http) => {
   }
 
   $scope.register = () => {
-    console.log($scope.registerData)
     $http.post('/api/register', $scope.registerData).then((response) => {
       swal('Success!', response.data.message, 'success')
     }).catch((error) => {
-      swal('Error!', error.data.error, 'error')
+      swal('Error!', error.data.message, 'error')
     })
   }
 }])
