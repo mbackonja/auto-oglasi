@@ -14,6 +14,14 @@ app.config(($routeProvider, $locationProvider) => {
         }
       }
     })
+    .when('/login', {
+      templateUrl: 'client/static/partials/auth/login.component.html',
+      resolve: {
+        'auth': (ActiveUserService) => {
+          return ActiveUserService.hasAccess('guest')
+        }
+      }
+    })
 
   $locationProvider.html5Mode(true)
 })

@@ -52,8 +52,35 @@ def register():
     cursor.execute(qurey, (data['name'], data['surname'], data['email'], hashed_password))
 
     database.commit()
-    session['user'] = {'id': cursor.lastrowid, 'name': data['name'], 'surname': data['surname'], 'email': data['email']}
+    session['user'] = {'id': cursor.lastrowid, 'name': data['name'], 'surname': data['surname'],
+                       'email': data['email']}
     return jsonify({'message': 'Successfully registered'}), 201
+
+@client.route('api/login', methods=['POST'])
+def login():
+    """
+    Login user
+    """
+    data = request.json
+    database = mysql.get_db()
+    cursor = database.cursor()
+
+    if 'email' not in data or not data['email']:
+        raise InvalidUsage("Email must not be empty", 422)
+    if 'password' not in data or not data['password']:
+        raise InvalidUsage("Password must not be empty", 422)
+
+    cursor.execute("SELECT * FROM users WHERE email=%s", (data['email']))
+    row = cursor.fetchone()
+    if cursor.rowcount == 0:
+        raise InvalidUsage("Wrong email or password", 401)
+
+    if not bcrypt.check_password_hash(row['password'], data['password']):
+        raise InvalidUsage("Wrong email or password", 401)
+
+    user = {'id': row['id'], 'name': row['name'], 'surname': row['surname'], 'email': row['email']}
+    session['user'] = user
+    return jsonify(user)
 
 @client.route('api/logout', methods=['POST'])
 def logout():

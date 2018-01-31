@@ -7,6 +7,11 @@ app.controller('AuthController', ['$scope', '$http', '$location', 'ActiveUserSer
     passwordAgain: ''
   }
 
+  $scope.loginData = {
+    email: '',
+    password: ''
+  }
+
   $scope.register = () => {
     $http.post('/api/register', $scope.registerData).then((response) => {
       ActiveUserService.setActiveUser($scope.registerData)
@@ -14,6 +19,15 @@ app.controller('AuthController', ['$scope', '$http', '$location', 'ActiveUserSer
         $location.path('/')
         $scope.$apply()
       })
+    }).catch((error) => {
+      swal('Error!', error.data.message, 'error')
+    })
+  }
+
+  $scope.login = () => {
+    $http.post('/api/login', $scope.loginData).then((response) => {
+      ActiveUserService.setActiveUser(response.data)
+      $location.path('/')
     }).catch((error) => {
       swal('Error!', error.data.message, 'error')
     })
