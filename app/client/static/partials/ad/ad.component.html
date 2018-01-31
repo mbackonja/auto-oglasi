@@ -2,13 +2,13 @@
   <img class="card-img-top" src="static/img/ads/1/1.jpg" alt="Card image cap">
   <div class="card-body">
     <p class="card-text">
-      [[ product.mark ]] - [[ product.model ]]<br />
+      [[ product.make ]] - [[ product.model ]]<br />
       [[ product.year ]].<br />
-      [[ product.km ]] km
+      [[ product.km.toLocaleString() ]] km
     </p>
   </div>
   <div class="card-footer">
     <small class="text-muted">[[ product.price.toLocaleString() ]]e</small>
-    <button type="button" class="btn btn-info btn-sm float-right">Info</button>
+    <button navigate="[[ '/product/' + product.id ]]" type="button" class="btn btn-info btn-sm float-right">Info</button>
   </div>
 </div>

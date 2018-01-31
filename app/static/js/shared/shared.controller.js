@@ -42,23 +42,38 @@ app.factory('ActiveUserService', ($q) => {
     }
   }
 })
+  .controller('NavbarController', ($scope, $location, $http, ActiveUserService) => {
+    $scope.isActive = (viewLocation) => {
+      return viewLocation === $location.path()
+    }
 
-app.controller('NavbarController', ['$scope', '$location', '$http', 'ActiveUserService', ($scope, $location, $http, ActiveUserService) => {
-  $scope.isActive = (viewLocation) => {
-    return viewLocation === $location.path()
-  }
+    $scope.getActiveUser = () => {
+      return ActiveUserService.getActiveUser()
+    }
 
-  $scope.getActiveUser = () => {
-    return ActiveUserService.getActiveUser()
-  }
+    $scope.isLogged = () => {
+      return !!$scope.getActiveUser()
+    }
 
-  $scope.isLogged = () => {
-    return !!$scope.getActiveUser()
-  }
+    $scope.logout = () => {
+      $http.post('/api/logout').then((response) => {
+        ActiveUserService.setActiveUser(null)
+      })
+    }
+  })
 
-  $scope.logout = () => {
-    $http.post('/api/logout').then((response) => {
-      ActiveUserService.setActiveUser(null)
-    })
-  }
-}])
+  .directive('navigate', ($location) => {
+    return (scope, element, attrs) => {
+      let path
+
+      attrs.$observe('navigate', (val) => {
+        path = val
+      })
+
+      element.bind('click', () => {
+        scope.$apply(() => {
+          $location.path(path)
+        })
+      })
+    }
+  })

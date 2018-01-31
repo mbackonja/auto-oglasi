@@ -1,4 +1,4 @@
-app.controller('AuthController', ['$scope', '$http', '$location', 'ActiveUserService', ($scope, $http, $location, ActiveUserService) => {
+app.controller('AuthController', ($scope, $http, $location, ActiveUserService) => {
   $scope.registerData = {
     name: '',
     surname: '',
@@ -32,4 +32,4 @@ app.controller('AuthController', ['$scope', '$http', '$location', 'ActiveUserSer
       swal('Error!', error.data.message, 'error')
     })
   }
-}])
+})

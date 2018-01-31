@@ -1,47 +1,7 @@
-app.controller('MainController', ['$scope', ($scope) => {
-  $scope.products = [
-    {
-      id: 1,
-      mark: 'Lada',
-      model: 'Kalina',
-      year: 2007,
-      price: 10000,
-      km: 1
-    }, {
-      id: 2,
-      mark: 'Lada',
-      model: 'Kalina',
-      year: 2007,
-      price: 10000,
-      km: 1
-    }, {
-      id: 2,
-      mark: 'Lada',
-      model: 'Kalina',
-      year: 2007,
-      price: 10000,
-      km: 1
-    }, {
-      id: 2,
-      mark: 'Lada',
-      model: 'Kalina',
-      year: 2007,
-      price: 10000,
-      km: 1
-    }, {
-      id: 2,
-      mark: 'Lada',
-      model: 'Kalina',
-      year: 2007,
-      price: 10000,
-      km: 1
-    }, {
-      id: 2,
-      mark: 'Lada',
-      model: 'Kalina',
-      year: 2007,
-      price: 10000,
-      km: 1
-    }
-  ]
-}])
+app.controller('MainController', ($scope, $http) => {
+  $scope.products = []
+
+  $http.get('/api/products').then((response) => {
+    $scope.products = response.data
+  })
+})

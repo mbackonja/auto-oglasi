@@ -3,13 +3,10 @@ app.config(($routeProvider, $locationProvider) => {
     .when('/', {
       templateUrl: 'client/static/partials/main/main.component.html'
     })
-    .when('/test', {
-      templateUrl: 'client/static/partials/test/test.component.html'
-    })
     .when('/register', {
       templateUrl: 'client/static/partials/auth/register.component.html',
       resolve: {
-        'auth': (ActiveUserService) => {
+        auth: (ActiveUserService) => {
           return ActiveUserService.hasAccess('guest')
         }
       }
@@ -17,10 +14,12 @@ app.config(($routeProvider, $locationProvider) => {
     .when('/login', {
       templateUrl: 'client/static/partials/auth/login.component.html',
       resolve: {
-        'auth': (ActiveUserService) => {
+        auth: (ActiveUserService) => {
           return ActiveUserService.hasAccess('guest')
         }
       }
+    }).when('/product/:id', {
+      templateUrl: 'client/static/partials/product/product.component.html'
     })
 
   $locationProvider.html5Mode(true)

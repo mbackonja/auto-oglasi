@@ -13,7 +13,7 @@
 <body ng-app="app" ng-cloak>
   <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top" ng-controller="NavbarController">
     <a class="navbar-brand" href="/">Auto oglasi</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNavbar">
       <span class="navbar-toggler-icon"></span>
     </button>
   
@@ -21,9 +21,6 @@
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
           <a class="nav-link" ng-class="{ active: isActive('/')}" href="/">Main</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" ng-class="{ active: isActive('/test')}" href="/test">Test</a>
         </li>
       </ul>
       <ul class="navbar-nav">
@@ -34,10 +31,10 @@
           <a class="nav-link" ng-class="{ active: isActive('/register')}" href="/register">Register</a>
         </li>
         <li class="nav-item dropdown" ng-if="isLogged()">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown">
             Wellcome [[ getActiveUser().name ]]
           </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <div class="dropdown-menu">
             <a class="dropdown-item" href="#">Profile</a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="#" ng-click="logout()">Logout</a>
@@ -66,5 +63,6 @@
   <script src="{{ url_for('client.static', filename='partials/main/main.controller.js') }}"></script>
   <script src="{{ url_for('client.static', filename='partials/auth/auth.controller.js') }}"></script>
   <script src="{{ url_for('client.static', filename='partials/ad/ad.controller.js') }}"></script>
+  <script src="{{ url_for('client.static', filename='partials/product/product.controller.js') }}"></script>
 </body>
 </html>

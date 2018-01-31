@@ -89,3 +89,38 @@ def logout():
     """
     session.pop('user', None)
     return jsonify({'message': 'Successfully logged out'})
+
+@client.route('api/products')
+def get_products():
+    """
+    Get all products
+    """
+    database = mysql.get_db()
+    cursor = database.cursor()
+
+    query = '''SELECT products.id, car_makes.make, car_models.model, products.year, products.price, products.km, products.status FROM products
+    JOIN car_models on products.model_id = car_models.id
+    JOIN car_makes on car_models.make_id = car_makes.id'''
+
+    cursor.execute(query)
+    products = cursor.fetchall()
+
+    return jsonify(products)
+
+@client.route('api/products/<int:product_id>')
+def get_product(product_id):
+    """
+    Get product
+    """
+    database = mysql.get_db()
+    cursor = database.cursor()
+
+    query = '''SELECT products.id, car_makes.make, car_models.model, products.year, products.price, products.km, products.status FROM products
+    JOIN car_models on products.model_id = car_models.id
+    JOIN car_makes on car_models.make_id = car_makes.id
+    WHERE products.id = %s'''
+
+    cursor.execute(query, (product_id))
+    products = cursor.fetchone()
+
+    return jsonify(products)
