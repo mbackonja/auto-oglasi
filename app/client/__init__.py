@@ -98,7 +98,8 @@ def get_products():
     database = mysql.get_db()
     cursor = database.cursor()
 
-    query = '''SELECT products.id, car_makes.make, car_models.model, products.year, products.price, products.km, products.status FROM products
+    query = '''SELECT products.id, car_makes.make, car_models.model, products.year,
+    products.price, products.km, products.status FROM products
     JOIN car_models on products.model_id = car_models.id
     JOIN car_makes on car_models.make_id = car_makes.id'''
 
@@ -115,9 +116,13 @@ def get_product(product_id):
     database = mysql.get_db()
     cursor = database.cursor()
 
-    query = '''SELECT products.id, car_makes.make, car_models.model, products.year, products.price, products.km, products.status FROM products
+    query = '''SELECT products.id, car_makes.make, car_models.model, products.year,
+    products.price, products.km, products.status, users.name, users.surname, products.phone,
+    products.address, products.kw, products.hp, products.ccm, products.fuel_type,
+    products.description FROM products
     JOIN car_models on products.model_id = car_models.id
     JOIN car_makes on car_models.make_id = car_makes.id
+    JOIN users on products.user_id = users.id
     WHERE products.id = %s'''
 
     cursor.execute(query, (product_id))

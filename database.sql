@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 31, 2018 at 10:11 PM
+-- Generation Time: Feb 01, 2018 at 11:11 PM
 -- Server version: 10.1.30-MariaDB
 -- PHP Version: 7.1.13
 
@@ -85,15 +85,22 @@ CREATE TABLE `products` (
   `year` year(4) NOT NULL,
   `price` int(10) UNSIGNED NOT NULL,
   `km` int(10) UNSIGNED NOT NULL,
-  `status` enum('new','used') COLLATE utf8mb4_unicode_ci NOT NULL
+  `status` enum('New','Used') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `kw` int(10) UNSIGNED NOT NULL,
+  `hp` int(10) UNSIGNED NOT NULL,
+  `ccm` int(10) UNSIGNED NOT NULL,
+  `fuel_type` enum('Diesel','Gasoline','LPG','Other') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `phone` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `address` text COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `products`
 --
 
-INSERT INTO `products` (`id`, `model_id`, `user_id`, `year`, `price`, `km`, `status`) VALUES
-(1, 10, 1, 2007, 10000, 1, 'new');
+INSERT INTO `products` (`id`, `model_id`, `user_id`, `year`, `price`, `km`, `status`, `kw`, `hp`, `ccm`, `fuel_type`, `description`, `phone`, `address`) VALUES
+(1, 10, 1, 2007, 10000, 1, 'New', 60, 81, 1596, 'Gasoline', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla commodo orci nec enim sodales pulvinar. Maecenas scelerisque lacinia felis, non ullamcorper turpis. Ut ornare velit tincidunt est ornare euismod. Phasellus et rutrum mi, at volutpat ipsum. Praesent vulputate, dui tempus commodo dignissim, eros odio sagittis quam, id fringilla turpis metus et ipsum. Aliquam accumsan convallis dolor non porta. Aenean nec massa quis lorem scelerisque tincidunt id vitae magna. Nam non diam mauris.', '0631234567', 'Bulevar Kralja Petra I 1\r\n21000 Novi Sad');
 
 -- --------------------------------------------------------
 
@@ -115,7 +122,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `surname`, `email`, `password`, `is_admin`) VALUES
-(1, 'Admin', 'Admin', 'admin@admin.com', '$2b$12$eMT0Lx9XEHRTuYNoyrGAB.ZjDILtPlfRVFRSFYNCzqJnvnbcktnG2', 0);
+(1, 'Admin', 'Admin', 'admin@admin.com', '$2b$12$eMT0Lx9XEHRTuYNoyrGAB.ZjDILtPlfRVFRSFYNCzqJnvnbcktnG2', 1);
 
 --
 -- Indexes for dumped tables

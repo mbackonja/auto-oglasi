@@ -6,7 +6,7 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-6">
+    <div class="col-md-6 col-sm-12 mb-sm-3">
       <div id="productImages" class="carousel slide" data-ride="carousel">
         <ol class="carousel-indicators">
           <li data-target="#productImages" data-slide-to="0" class="active"></li>
@@ -32,12 +32,33 @@
         </a>
       </div>
     </div>
-    <div class="col-6">
-      <div class="text-capitalize">Status: [[ product.status ]]</div>
-      <div>Make: [[ product.make ]]</div>
-      <div>Model: [[ product.model ]]</div>
-      <div>Price: [[ product.price.toLocaleString() ]]e</div>
-      <div>Milage: [[ product.km.toLocaleString() ]] km</div>
+    <div class="col-md-3 col-sm-6">
+      <div class="alert alert-success text-right">
+        <h4 class="mb-0">
+          [[ product.price.toLocaleString() ]]e
+        </h4>
+      </div>
+      <div>[[ product.status ]]</div>
+      <div>[[ product.make ]]</div>
+      <div>[[ product.model ]]</div>
+      <div>[[ product.year ]]. year</div>
+      <div>[[ product.km.toLocaleString() ]] km</div>
+      <div>[[ product.kw ]]/[[ product.hp ]] (kW/hp)</div>
+      <div>[[ product.ccm.toLocaleString() ]] ccm<sup>3</sup></div>
+      <div>[[ product.fuel_type ]]</div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+      <address class="border-bottom">
+        <div>[[ product.name ]] [[ product.surname ]]</div>
+        <div style="white-space: pre-wrap;">[[ product.address ]]</div>
+        <a href="tel:[[ product.phone ]]">[[ product.phone ]]</a>
+      </address>
+      <img src="http://via.placeholder.com/300x200" alt="Place for Your ad" class="rounded img-fluid">
+    </div>
+  </div>
+  <div class="row border-top mt-3 pt-3">
+    <div class="col">
+      [[ product.description ]]
     </div>
   </div>
 </div>
