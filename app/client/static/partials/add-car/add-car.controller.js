@@ -1,23 +1,22 @@
 app.controller('AddCarController', ($scope, $http, $location) => {
   $scope.makes = []
   $scope.models = []
-  $scope.step = 1
 
   $scope.data = {
-    make: '',
-    model: '',
-    year: '',
-    mileage: '',
-    price: '',
-    condition: '',
-    displacement: '',
-    fuel_type: '',
-    kw: '',
-    hp: '',
-    description: '',
-    address: '',
-    city: '',
-    phone: '',
+    make: '1',
+    model: '1',
+    year: 2010,
+    mileage: 100,
+    price: 1230,
+    condition: 'New',
+    displacement: 1599,
+    fuel_type: 'LPG',
+    kw: 10,
+    hp: 20,
+    description: 'Bla bla',
+    address: 'adresaaaa',
+    city: 'graaad',
+    phone: '0631234567',
     images: null
   }
 
@@ -26,11 +25,31 @@ app.controller('AddCarController', ($scope, $http, $location) => {
     $scope.models = response.data.models
   })
 
-  $scope.goToStep2 = () => {
-    $scope.step = 2
-  }
-
   $scope.create = () => {
-    console.log($scope.data)
+    let formData = new FormData()
+    for (let key in $scope.data) {
+      if (key === 'images') {
+        $scope.data['images'].forEach((image) => {
+          formData.append('images', image._file)
+        })
+      } else {
+        formData.append(key, $scope.data[key])
+      }
+    }
+    let config = {
+      transformRequest: angular.identity,
+      headers: {
+        'Content-Type': undefined
+      }
+    }
+
+    $http.post('/api/cars', formData, config).then((response) => {
+      swal({ title: 'Success!', text: response.data.message, type: 'success' }, () => {
+        $location.path('/')
+        $scope.$apply()
+      })
+    }).catch((error) => {
+      swal('Error!', error.data.message, 'error')
+    })
   }
 })

@@ -1,7 +1,7 @@
 <div class="container" ng-controller="AddCarController">
   <div class="row justify-content-center">
     <div class="col-lg-6 col-md-8 col-sm-10">
-      <form ng-if="step === 1" ng-submit="goToStep2()">
+      <form ng-submit="create()">
         <div class="form-row">
           <div class="form-group col-sm-6 col-12">
             <label for="make">Make</label>
@@ -44,8 +44,8 @@
             <label for="condition">Condition</label>
             <select class="custom-select" id="condition" ng-model="data.condition" required>
               <option value="">Select car condition</option>
-              <option value="1">New</option>
-              <option value="2">Used</option>
+              <option value="New">New</option>
+              <option value="Used">Used</option>
             </select>
           </div>
         </div>
@@ -63,10 +63,10 @@
             <label for="fuel_type">Fuel type</label>
             <select class="custom-select" id="fuel_type" ng-model="data.fuel_type" required>
               <option value="">Select fuel type</option>
-              <option value="1">Diesel</option>
-              <option value="2">Gasoline</option>
-              <option value="3">LPG</option>
-              <option value="4">Other</option>
+              <option value="Diesel">Diesel</option>
+              <option value="Gasoline">Gasoline</option>
+              <option value="LPG">LPG</option>
+              <option value="Other">Other</option>
             </select>
           </div>
         </div>
@@ -110,14 +110,13 @@
         </div>
         <div class="form-group">
             <label for="images">Images</label>
-            <input type="file" class="form-control-file" id="images" ng-file-model="data.images" accept="image/*" multiple>
+            <input type="file" class="form-control-file" id="images" ng-file-model="data.images" accept="image/*" multiple required>
             <div class="mt-3">
                 <img ng-repeat="image in data.images" src="[[ image.url ]]" class="img-thumbnail" style="width: 5rem;">
             </div>
         </div>
-        
-        
-        <button type="submit" class="btn btn-primary btn-block" ng-click="create()">Add car</button>
+
+        <button type="submit" class="btn btn-primary btn-block">Add car</button>
       </form>
     </div>
   </div>

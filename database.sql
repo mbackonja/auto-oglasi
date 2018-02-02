@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 01, 2018 at 11:11 PM
+-- Generation Time: Feb 02, 2018 at 08:28 PM
 -- Server version: 10.1.30-MariaDB
 -- PHP Version: 7.1.13
 
@@ -21,6 +21,41 @@ SET time_zone = "+00:00";
 --
 -- Database: `auto-oglasi`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cars`
+--
+
+CREATE TABLE `cars` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `model_id` int(10) UNSIGNED NOT NULL,
+  `user_id` int(10) UNSIGNED NOT NULL,
+  `year` year(4) NOT NULL,
+  `price` int(10) UNSIGNED NOT NULL,
+  `km` int(10) UNSIGNED NOT NULL,
+  `status` enum('New','Used') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `kw` int(10) UNSIGNED NOT NULL,
+  `hp` int(10) UNSIGNED NOT NULL,
+  `ccm` int(10) UNSIGNED NOT NULL,
+  `fuel_type` enum('Diesel','Gasoline','LPG','Other') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `phone` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `address` text COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cars_images`
+--
+
+CREATE TABLE `cars_images` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `car_id` int(10) UNSIGNED NOT NULL,
+  `path` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -75,36 +110,6 @@ INSERT INTO `car_models` (`id`, `model`, `make_id`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `cars`
---
-
-CREATE TABLE `cars` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `model_id` int(10) UNSIGNED NOT NULL,
-  `user_id` int(10) UNSIGNED NOT NULL,
-  `year` year(4) NOT NULL,
-  `price` int(10) UNSIGNED NOT NULL,
-  `km` int(10) UNSIGNED NOT NULL,
-  `status` enum('New','Used') COLLATE utf8mb4_unicode_ci NOT NULL,
-  `kw` int(10) UNSIGNED NOT NULL,
-  `hp` int(10) UNSIGNED NOT NULL,
-  `ccm` int(10) UNSIGNED NOT NULL,
-  `fuel_type` enum('Diesel','Gasoline','LPG','Other') COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `phone` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `address` text COLLATE utf8mb4_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `cars`
---
-
-INSERT INTO `cars` (`id`, `model_id`, `user_id`, `year`, `price`, `km`, `status`, `kw`, `hp`, `ccm`, `fuel_type`, `description`, `phone`, `address`) VALUES
-(1, 10, 1, 2007, 10000, 1, 'New', 60, 81, 1596, 'Gasoline', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla commodo orci nec enim sodales pulvinar. Maecenas scelerisque lacinia felis, non ullamcorper turpis. Ut ornare velit tincidunt est ornare euismod. Phasellus et rutrum mi, at volutpat ipsum. Praesent vulputate, dui tempus commodo dignissim, eros odio sagittis quam, id fringilla turpis metus et ipsum. Aliquam accumsan convallis dolor non porta. Aenean nec massa quis lorem scelerisque tincidunt id vitae magna. Nam non diam mauris.', '0631234567', 'Bulevar Kralja Petra I 1\r\n21000 Novi Sad');
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `users`
 --
 
@@ -129,6 +134,21 @@ INSERT INTO `users` (`id`, `name`, `surname`, `email`, `password`, `is_admin`) V
 --
 
 --
+-- Indexes for table `cars`
+--
+ALTER TABLE `cars`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `cars_model_id_foreign` (`model_id`),
+  ADD KEY `cars_user_id_foreign` (`user_id`);
+
+--
+-- Indexes for table `cars_images`
+--
+ALTER TABLE `cars_images`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `cars_images_car_id_foreign` (`car_id`);
+
+--
 -- Indexes for table `car_makes`
 --
 ALTER TABLE `car_makes`
@@ -142,14 +162,6 @@ ALTER TABLE `car_models`
   ADD KEY `car_models_make_id_foreign` (`make_id`);
 
 --
--- Indexes for table `cars`
---
-ALTER TABLE `cars`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `cars_model_id_foreign` (`model_id`),
-  ADD KEY `cars_user_id_foreign` (`user_id`);
-
---
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -158,6 +170,18 @@ ALTER TABLE `users`
 --
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `cars`
+--
+ALTER TABLE `cars`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `cars_images`
+--
+ALTER TABLE `cars_images`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `car_makes`
@@ -172,12 +196,6 @@ ALTER TABLE `car_models`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
--- AUTO_INCREMENT for table `cars`
---
-ALTER TABLE `cars`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
@@ -188,17 +206,23 @@ ALTER TABLE `users`
 --
 
 --
--- Constraints for table `car_models`
---
-ALTER TABLE `car_models`
-  ADD CONSTRAINT `car_models_make_id_foreign` FOREIGN KEY (`make_id`) REFERENCES `car_makes` (`id`);
-
---
 -- Constraints for table `cars`
 --
 ALTER TABLE `cars`
   ADD CONSTRAINT `cars_model_id_foreign` FOREIGN KEY (`model_id`) REFERENCES `car_models` (`id`),
   ADD CONSTRAINT `cars_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+
+--
+-- Constraints for table `cars_images`
+--
+ALTER TABLE `cars_images`
+  ADD CONSTRAINT `cars_images_car_id_foreign` FOREIGN KEY (`car_id`) REFERENCES `cars` (`id`);
+
+--
+-- Constraints for table `car_models`
+--
+ALTER TABLE `car_models`
+  ADD CONSTRAINT `car_models_make_id_foreign` FOREIGN KEY (`make_id`) REFERENCES `car_makes` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
