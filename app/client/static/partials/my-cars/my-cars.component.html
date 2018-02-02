@@ -14,7 +14,7 @@
       </thead>
       <tbody>
         <tr ng-repeat="car in cars">
-          <td><img style="height: 5rem;" class="img-fluid img-thumbnail" src="static/img/cars/1/1.jpg"></td>
+          <td><img style="height: 5rem;" class="img-fluid img-thumbnail" ng-src="static/img/cars/[[ car.id ]]/[[ car.image_path ]]"></td>
           <td>[[ car.make ]] - [[ car.model ]]</td>
           <td>[[ car.year ]]</td>
           <td>[[ car.price.toLocaleString() ]]€</td>

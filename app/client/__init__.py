@@ -159,11 +159,14 @@ def my_cars():
     query = '''SELECT cars.id, car_makes.make, car_models.model, cars.year,
     cars.price, cars.km, cars.status, users.name, users.surname, cars.phone,
     cars.address, cars.kw, cars.hp, cars.ccm, cars.fuel_type,
-    cars.description FROM cars
+    cars.description, cars_images.path as image_path
+    FROM cars
     JOIN car_models on cars.model_id = car_models.id
     JOIN car_makes on car_models.make_id = car_makes.id
     JOIN users on cars.user_id = users.id
-    WHERE users.id = %s'''
+    JOIN cars_images on cars.id = cars_images.car_id
+    WHERE users.id = %s
+    GROUP BY cars.id'''
 
     cursor.execute(query, (session.get('user')['id']))
     cars = cursor.fetchall()
