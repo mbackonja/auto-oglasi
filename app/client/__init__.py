@@ -350,6 +350,14 @@ def create_new_car():
     if 'address' not in data or not data['address']:
         raise InvalidUsage("Address must not be empty", 422)
 
+    images = request.files.getlist('images')
+    if len(images) == 0:
+        raise InvalidUsage("Must upload at least one image", 422)
+
+    for image in images:
+        if not is_allowed_file(image.filename):
+            raise InvalidUsage("Image must be jpg/jpeg/bmp/png", 422)
+
     allowed_condition = [ 'New', 'Used' ]
     allowed_fuel_type = [ 'Diesel', 'Gasolne', 'LPG', 'Other' ]
 
@@ -401,10 +409,9 @@ def create_new_car():
     images = request.files.getlist('images')
 
     for image in images:
-        if is_allowed_file(image.filename):
-            filename = secure_filename(image.filename)
-            image.save(path.join(image_path, filename))
-            cursor.execute(query, (car_id, filename))
-            database.commit()
+        filename = secure_filename(image.filename)
+        image.save(path.join(image_path, filename))
+        cursor.execute(query, (car_id, filename))
+        database.commit()
 
     return jsonify({'message': 'Successfully added'}), 201
