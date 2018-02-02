@@ -18,17 +18,28 @@ app.config(($routeProvider, $locationProvider) => {
           return ActiveUserService.hasAccess('guest')
         }
       }
-    }).when('/my-profile', {
+    })
+    .when('/my-profile', {
       templateUrl: 'client/static/partials/my-profile/my-profile.component.html',
       resolve: {
         auth: (ActiveUserService) => {
           return ActiveUserService.hasAccess('member')
         }
       }
-    }).when('/car/:id', {
+    })
+    .when('/car/:id', {
       templateUrl: 'client/static/partials/car/car.component.html'
-    }).when('/my-cars', {
+    })
+    .when('/my-cars', {
       templateUrl: 'client/static/partials/my-cars/my-cars.component.html',
+      resolve: {
+        auth: (ActiveUserService) => {
+          return ActiveUserService.hasAccess('member')
+        }
+      }
+    })
+    .when('/add-car', {
+      templateUrl: 'client/static/partials/add-car/add-car.component.html',
       resolve: {
         auth: (ActiveUserService) => {
           return ActiveUserService.hasAccess('member')

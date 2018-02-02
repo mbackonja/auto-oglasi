@@ -61,7 +61,6 @@ app.factory('ActiveUserService', ($q) => {
       })
     }
   })
-
   .directive('navigate', ($location) => {
     return (scope, element, attrs) => {
       let path
@@ -77,3 +76,36 @@ app.factory('ActiveUserService', ($q) => {
       })
     }
   })
+  .directive('ngFileModel', ['$parse', ($parse) => {
+    return {
+      restrict: 'A',
+      link: (scope, element, attrs) => {
+        let model = $parse(attrs.ngFileModel)
+        let isMultiple = attrs.multiple
+        let modelSetter = model.assign
+
+        element.bind('change', () => {
+          let values = []
+
+          Array.from(element[0].files).forEach((item) => {
+            let value = {
+              name: item.name,
+              size: item.size,
+              url: URL.createObjectURL(item),
+              _file: item
+            }
+
+            values.push(value)
+          })
+
+          scope.$apply(() => {
+            if (isMultiple) {
+              modelSetter(scope, values)
+            } else {
+              modelSetter(scope, values[0])
+            }
+          })
+        })
+      }
+    }
+  }])

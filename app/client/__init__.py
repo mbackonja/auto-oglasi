@@ -6,6 +6,10 @@ from flask import Blueprint, render_template, jsonify, request, session
 from flask_bcrypt import Bcrypt
 from app.common.mysql import mysql
 from app.common.invalid_usage_exception import InvalidUsage
+from app.common.file_helper import is_allowed_file
+from werkzeug.utils import secure_filename
+from os import path, makedirs
+from datetime import datetime
 
 client = Blueprint('client', __name__, template_folder='templates', static_folder='static',  # pylint: disable=invalid-name
                    static_url_path='client/static')
@@ -99,11 +103,12 @@ def get_cars():
     cursor = database.cursor()
 
     query = '''SELECT cars.id, car_makes.make, car_models.model, cars.year,
-    cars.price, cars.km, cars.status
+    cars.price, cars.km, cars.status, cars_images.path as image_path
     FROM cars
     JOIN car_models on cars.model_id = car_models.id
-    JOIN car_makes on car_models.make_id = car_makes.id'''
-
+    JOIN car_makes on car_models.make_id = car_makes.id
+    JOIN cars_images on cars.id = cars_images.car_id
+    GROUP BY cars.id'''
     cursor.execute(query)
     cars = cursor.fetchall()
 
@@ -119,16 +124,24 @@ def get_car(car_id):
 
     query = '''SELECT cars.id, car_makes.make, car_models.model, cars.year,
     cars.price, cars.km, cars.status, users.name, users.surname, cars.phone,
-    cars.address, cars.kw, cars.hp, cars.ccm, cars.fuel_type,
+    cars.address, cars.city, cars.kw, cars.hp, cars.ccm, cars.fuel_type,
     cars.description
     FROM cars
     JOIN car_models on cars.model_id = car_models.id
     JOIN car_makes on car_models.make_id = car_makes.id
     JOIN users on cars.user_id = users.id
     WHERE cars.id = %s'''
-
     cursor.execute(query, (car_id))
     car = cursor.fetchone()
+
+    query = '''SELECT id, path
+    FROM cars_images
+    WHERE car_id = %s'''
+
+    cursor.execute(query, (car_id))
+    images = cursor.fetchall()
+
+    car['images'] = images
 
     return jsonify(car)
 
@@ -276,3 +289,131 @@ def update_user_login_data():
     session['user'] = activeUser
 
     return jsonify({'message': 'Successfully updated'}), 200
+
+@client.route('api/makes-and-models')
+def get_cars_makes_and_models():
+    """
+    Get all car makes and models
+    """
+    database = mysql.get_db()
+    cursor = database.cursor()
+
+    query = '''SELECT *
+    FROM car_models'''
+
+    cursor.execute(query)
+    car_models = cursor.fetchall()
+
+    query = '''SELECT *
+    FROM car_makes'''
+
+    cursor.execute(query)
+    car_makes = cursor.fetchall()
+    response = { 'makes': car_makes, 'models': car_models }
+
+    return jsonify(response)
+
+@client.route('api/cars', methods=['POST'])
+def create_new_car():
+    """
+    Create new car
+    """
+    if not 'user' in session:
+        raise InvalidUsage("Access denied", 401)
+
+    data = request.form
+    database = mysql.get_db()
+    cursor = database.cursor()
+
+    if 'model' not in data or not data['model']:
+        raise InvalidUsage("Car model must not be empty", 422)
+    if 'year' not in data or not data['year']:
+        raise InvalidUsage("Year must not be empty", 422)
+    if 'price' not in data or not data['price']:
+        raise InvalidUsage("Price must not be empty", 422)
+    if 'mileage' not in data or not data['mileage']:
+        raise InvalidUsage("Mileage must not be empty", 422)
+    if 'condition' not in data or not data['condition']:
+        raise InvalidUsage("Condition must not be empty", 422)
+    if 'kw' not in data or not data['kw']:
+        raise InvalidUsage("kW must not be empty", 422)
+    if 'hp' not in data or not data['hp']:
+        raise InvalidUsage("hp must not be empty", 422)
+    if 'displacement' not in data or not data['displacement']:
+        raise InvalidUsage("Displacement must not be empty", 422)
+    if 'fuel_type' not in data or not data['fuel_type']:
+        raise InvalidUsage("Fuel type must not be empty", 422)
+    if 'description' not in data or not data['description']:
+        raise InvalidUsage("Description must not be empty", 422)
+    if 'phone' not in data or not data['phone']:
+        raise InvalidUsage("Phone must not be empty", 422)
+    if 'address' not in data or not data['address']:
+        raise InvalidUsage("Address must not be empty", 422)
+    if 'city' not in data or not data['city']:
+        raise InvalidUsage("City must not be empty", 422)
+
+    images = request.files.getlist('images')
+    if len(images) == 0:
+        raise InvalidUsage("Must upload at least one image", 422)
+
+    for image in images:
+        if not is_allowed_file(image.filename):
+            raise InvalidUsage("Image must be jpg/jpeg/bmp/png", 422)
+
+    allowed_condition = [ 'New', 'Used' ]
+    allowed_fuel_type = [ 'Diesel', 'Gasoline', 'LPG', 'Other' ]
+
+    query = '''SELECT id
+    FROM car_models
+    WHERE id = %s'''
+    cursor.execute(query, (data['model']))
+    cursor.fetchone()
+    if cursor.rowcount == 0:
+        raise InvalidUsage("Uknown car model", 422)
+
+    
+    if not data['year'].isdigit() or int(data['year']) < 0 or int(data['year']) > datetime.now().year:
+        raise InvalidUsage("Invalid year", 422)
+    if not data['price'].isdigit() or int(data['price']) <= 0:
+        raise InvalidUsage("Price must be positive number", 422)
+    if not data['mileage'].isdigit() or int(data['mileage']) <= 0:
+        raise InvalidUsage("Mileage must be positive number", 422)
+    if not data['kw'].isdigit() or int(data['kw']) <= 0:
+        raise InvalidUsage("kW must be positive number", 422)
+    if not data['hp'].isdigit() or int(data['hp']) <= 0:
+        raise InvalidUsage("hp must be positive number", 422)
+    if not data['condition'] or not data['condition'] in allowed_condition:
+        raise InvalidUsage("Condition invalid", 422)
+    if not data['fuel_type'] or not data['fuel_type'] in allowed_fuel_type:
+        raise InvalidUsage("Fuel type invalid", 422)
+
+
+    query = '''INSERT INTO
+    cars(model_id, user_id, year, price, km, status, kw, hp, ccm, fuel_type, description, phone, address, city)
+    VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)'''
+
+    cursor.execute(query,
+                  (data['model'], session.get('user')['id'], data['year'],
+                  data['price'], data['mileage'], data['condition'], data['kw'],
+                  data['hp'], data['displacement'], data['fuel_type'], data['description'],
+                  data['phone'], data['address'], data['city']))
+    database.commit()
+    car_id = cursor.lastrowid
+
+    image_path = path.join(path.abspath('app/static/img/cars'), str(cursor.lastrowid))
+    if not path.exists(image_path):
+        makedirs(image_path)
+
+    query = '''INSERT INTO
+    cars_images(car_id, path)
+    VALUES(%s, %s)'''
+
+    images = request.files.getlist('images')
+
+    for image in images:
+        filename = secure_filename(image.filename)
+        image.save(path.join(image_path, filename))
+        cursor.execute(query, (car_id, filename))
+        database.commit()
+
+    return jsonify({'message': 'Successfully added'}), 201

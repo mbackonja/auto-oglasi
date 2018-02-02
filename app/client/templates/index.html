@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="static/bower_components/sweetalert/dist/sweetalert.css">
   <link rel="stylesheet" href="static/css/app.css">
 </head>
-<body ng-app="app" ng-cloak>
+<body ng-app="app" ng-cloak class="pb-4">
   <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top" ng-controller="NavbarController">
     <a class="navbar-brand" href="/">Auto oglasi</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNavbar">
@@ -24,6 +24,9 @@
         </li>
         <li class="nav-item" ng-if="isLogged()">
           <a class="nav-link" ng-class="{ active: isActive('/my-cars')}" href="/my-cars">My cars</a>
+        </li>
+        <li class="nav-item" ng-if="isLogged()">
+          <a class="nav-link" ng-class="{ active: isActive('/add-cars')}" href="/add-car">Add car</a>
         </li>
       </ul>
       <ul class="navbar-nav">
@@ -69,5 +72,6 @@
   <script src="{{ url_for('client.static', filename='partials/car/car.controller.js') }}"></script>
   <script src="{{ url_for('client.static', filename='partials/my-cars/my-cars.controller.js') }}"></script>
   <script src="{{ url_for('client.static', filename='partials/my-profile/my-profile.controller.js') }}"></script>
+  <script src="{{ url_for('client.static', filename='partials/add-car/add-car.controller.js') }}"></script>
 </body>
 </html>
