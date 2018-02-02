@@ -18,6 +18,13 @@ app.config(($routeProvider, $locationProvider) => {
           return ActiveUserService.hasAccess('guest')
         }
       }
+    }).when('/my-profile', {
+      templateUrl: 'client/static/partials/my-profile/my-profile.component.html',
+      resolve: {
+        auth: (ActiveUserService) => {
+          return ActiveUserService.hasAccess('member')
+        }
+      }
     }).when('/car/:id', {
       templateUrl: 'client/static/partials/car/car.component.html'
     }).when('/my-cars', {
