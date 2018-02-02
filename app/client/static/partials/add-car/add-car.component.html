@@ -1,0 +1,120 @@
+<div class="container" ng-controller="AddCarController">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <form ng-submit="login()">
+        <div class="form-row">
+          <div class="form-group col-6">
+            <label for="make">Make</label>
+            <select class="custom-select" id="make">
+                <option selected>Select car make</option>
+                <option value="1">One</option>
+                <option value="2">Two</option>
+                <option value="3">Three</option>
+              </select>
+          </div>
+          <div class="form-group col-6">
+            <label for="model">Model</label>
+            <select class="custom-select" id="model">
+              <option selected>Select car model</option>
+              <option value="1">One</option>
+              <option value="2">Two</option>
+              <option value="3">Three</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="year">Year</label>
+          <input type="number" class="form-control" id="year" placeholder="Enter year of manufacture">
+        </div>
+        <div class="form-group">
+          <label for="mileage">Mileage</label>
+          <div class="input-group">
+            <input type="number" class="form-control" id="mileage" placeholder="Enter mileage">
+            <div class="input-group-append">
+              <span class="input-group-text">km</span>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-7">
+            <label for="price">Price</label>
+            <div class="input-group">
+              <input type="number" class="form-control" id="price" placeholder="Enter price">
+              <div class="input-group-append">
+                <span class="input-group-text">€</span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-5">
+            <label for="condition">Condition</label>
+            <select class="custom-select" id="condition">
+              <option selected>Select car condition</option>
+              <option value="1">New</option>
+              <option value="2">Used</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-7">
+            <label for="displacement">Displacement</label>
+            <div class="input-group">
+              <input type="number" class="form-control" id="displacement" placeholder="Enter engine displacement">
+              <div class="input-group-append">
+                <span class="input-group-text">ccm<sup>3</sup></span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-5">
+            <label for="fuel_type">Fuel type</label>
+            <select class="custom-select" id="fuel_type">
+              <option selected>Select fuel type</option>
+              <option value="1">Diesel</option>
+              <option value="2">Gasoline</option>
+              <option value="3">LPG</option>
+              <option value="4">Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-6">
+            <label for="kw">kW</label>
+            <div class="input-group">
+              <input type="number" class="form-control" id="kw" placeholder="Enter kW">
+              <div class="input-group-append">
+                <span class="input-group-text">kw</span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-6">
+            <label for="kw">hp</label>
+            <div class="input-group">
+              <input type="number" class="form-control" id="kw" placeholder="Enter hp">
+              <div class="input-group-append">
+                <span class="input-group-text">hp</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="description">Description</label>
+          <textarea class="form-control" id="description" rows="3" placeholder="Enter car description"></textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-6">
+            <label for="address">Address</label>
+            <input type="text" class="form-control" id="address" placeholder="Enter address">
+          </div>
+          <div class="form-group col-3">
+            <label for="city">City</label>
+            <input type="text" class="form-control" id="city" placeholder="Enter city">
+          </div>
+          <div class="form-group col-3">
+            <label for="phone-number">Phone number</label>
+            <input type="text" class="form-control" id="phone-number" placeholder="Enter phone">
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Add</button>
+      </form>
+    </div>
+  </div>
+</div>
