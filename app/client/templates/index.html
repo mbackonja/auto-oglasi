@@ -22,6 +22,9 @@
         <li class="nav-item">
           <a class="nav-link" ng-class="{ active: isActive('/')}" href="/">Main</a>
         </li>
+        <li class="nav-item" ng-if="isLogged()">
+            <a class="nav-link" ng-class="{ active: isActive('/my-products')}" href="/my-products">My products</a>
+          </li>
       </ul>
       <ul class="navbar-nav">
           <li class="nav-item" ng-if="!isLogged()">
@@ -62,7 +65,8 @@
 
   <script src="{{ url_for('client.static', filename='partials/main/main.controller.js') }}"></script>
   <script src="{{ url_for('client.static', filename='partials/auth/auth.controller.js') }}"></script>
-  <script src="{{ url_for('client.static', filename='partials/ad/ad.controller.js') }}"></script>
+  <script src="{{ url_for('client.static', filename='partials/product-card/product-card.controller.js') }}"></script>
   <script src="{{ url_for('client.static', filename='partials/product/product.controller.js') }}"></script>
+  <script src="{{ url_for('client.static', filename='partials/my-products/my-products.controller.js') }}"></script>
 </body>
 </html>

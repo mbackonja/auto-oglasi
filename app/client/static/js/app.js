@@ -20,6 +20,8 @@ app.config(($routeProvider, $locationProvider) => {
       }
     }).when('/product/:id', {
       templateUrl: 'client/static/partials/product/product.component.html'
+    }).when('/my-products', {
+      templateUrl: 'client/static/partials/my-products/my-products.component.html'
     })
 
   $locationProvider.html5Mode(true)

@@ -126,6 +126,53 @@ def get_product(product_id):
     WHERE products.id = %s'''
 
     cursor.execute(query, (product_id))
-    products = cursor.fetchone()
+    product = cursor.fetchone()
+
+    return jsonify(product)
+
+@client.route('api/my-products')
+def my_products():
+    """
+    Get my products
+    """
+    if not 'user' in session:
+        raise InvalidUsage("Access denied", 401)
+
+    database = mysql.get_db()
+    cursor = database.cursor()
+
+    query = '''SELECT products.id, car_makes.make, car_models.model, products.year,
+    products.price, products.km, products.status, users.name, users.surname, products.phone,
+    products.address, products.kw, products.hp, products.ccm, products.fuel_type,
+    products.description FROM products
+    JOIN car_models on products.model_id = car_models.id
+    JOIN car_makes on car_models.make_id = car_makes.id
+    JOIN users on products.user_id = users.id
+    WHERE users.id = %s'''
+
+    cursor.execute(query, (session.get('user')['id']))
+    products = cursor.fetchall()
 
     return jsonify(products)
+
+@client.route('api/my-products/<int:product_id>', methods=['DELETE'])
+def delete_my_product(product_id):
+    """
+    Delete my product
+    """
+    if not 'user' in session:
+        raise InvalidUsage("Access denied", 401)
+
+    database = mysql.get_db()
+    cursor = database.cursor()
+
+    query = '''DELETE FROM products
+    WHERE products.id = %s AND user_id = %s'''
+
+    numrows = cursor.execute(query, (product_id, session.get('user')['id']))
+    database.commit()
+
+    if numrows == 0:
+        raise InvalidUsage('You don\'t have permission', 401)
+
+    return jsonify({'message': 'Successfully deleted'}), 200
