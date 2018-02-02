@@ -1,7 +1,7 @@
 app.controller('MainController', ($scope, $http) => {
-  $scope.products = []
+  $scope.cars = []
 
-  $http.get('/api/products').then((response) => {
-    $scope.products = response.data
+  $http.get('/api/cars').then((response) => {
+    $scope.cars = response.data
   })
 })

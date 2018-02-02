@@ -75,10 +75,10 @@ INSERT INTO `car_models` (`id`, `model`, `make_id`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `products`
+-- Table structure for table `cars`
 --
 
-CREATE TABLE `products` (
+CREATE TABLE `cars` (
   `id` int(10) UNSIGNED NOT NULL,
   `model_id` int(10) UNSIGNED NOT NULL,
   `user_id` int(10) UNSIGNED NOT NULL,
@@ -96,10 +96,10 @@ CREATE TABLE `products` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data for table `products`
+-- Dumping data for table `cars`
 --
 
-INSERT INTO `products` (`id`, `model_id`, `user_id`, `year`, `price`, `km`, `status`, `kw`, `hp`, `ccm`, `fuel_type`, `description`, `phone`, `address`) VALUES
+INSERT INTO `cars` (`id`, `model_id`, `user_id`, `year`, `price`, `km`, `status`, `kw`, `hp`, `ccm`, `fuel_type`, `description`, `phone`, `address`) VALUES
 (1, 10, 1, 2007, 10000, 1, 'New', 60, 81, 1596, 'Gasoline', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla commodo orci nec enim sodales pulvinar. Maecenas scelerisque lacinia felis, non ullamcorper turpis. Ut ornare velit tincidunt est ornare euismod. Phasellus et rutrum mi, at volutpat ipsum. Praesent vulputate, dui tempus commodo dignissim, eros odio sagittis quam, id fringilla turpis metus et ipsum. Aliquam accumsan convallis dolor non porta. Aenean nec massa quis lorem scelerisque tincidunt id vitae magna. Nam non diam mauris.', '0631234567', 'Bulevar Kralja Petra I 1\r\n21000 Novi Sad');
 
 -- --------------------------------------------------------
@@ -142,12 +142,12 @@ ALTER TABLE `car_models`
   ADD KEY `car_models_make_id_foreign` (`make_id`);
 
 --
--- Indexes for table `products`
+-- Indexes for table `cars`
 --
-ALTER TABLE `products`
+ALTER TABLE `cars`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `products_model_id_foreign` (`model_id`),
-  ADD KEY `products_user_id_foreign` (`user_id`);
+  ADD KEY `cars_model_id_foreign` (`model_id`),
+  ADD KEY `cars_user_id_foreign` (`user_id`);
 
 --
 -- Indexes for table `users`
@@ -172,9 +172,9 @@ ALTER TABLE `car_models`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
--- AUTO_INCREMENT for table `products`
+-- AUTO_INCREMENT for table `cars`
 --
-ALTER TABLE `products`
+ALTER TABLE `cars`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
@@ -194,11 +194,11 @@ ALTER TABLE `car_models`
   ADD CONSTRAINT `car_models_make_id_foreign` FOREIGN KEY (`make_id`) REFERENCES `car_makes` (`id`);
 
 --
--- Constraints for table `products`
+-- Constraints for table `cars`
 --
-ALTER TABLE `products`
-  ADD CONSTRAINT `products_model_id_foreign` FOREIGN KEY (`model_id`) REFERENCES `car_models` (`id`),
-  ADD CONSTRAINT `products_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+ALTER TABLE `cars`
+  ADD CONSTRAINT `cars_model_id_foreign` FOREIGN KEY (`model_id`) REFERENCES `car_models` (`id`),
+  ADD CONSTRAINT `cars_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

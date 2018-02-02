@@ -1,8 +1,8 @@
-app.controller('MyProductsController', ($scope, $http) => {
-  $scope.products = []
+app.controller('MyCarsController', ($scope, $http) => {
+  $scope.cars = []
 
-  $http.get('/api/my-products').then((response) => {
-    $scope.products = response.data
+  $http.get('/api/my-cars').then((response) => {
+    $scope.cars = response.data
   })
 
   $scope.delete = (id) => {
@@ -18,8 +18,8 @@ app.controller('MyProductsController', ($scope, $http) => {
       cancelButtonText: 'No'
     }, (willDelete) => {
       if (willDelete) {
-        $http.delete(`/api/my-products/${id}`).then(() => {
-          $scope.products.splice($scope.products.findIndex((product) => { return product.id === id }), 1)
+        $http.delete(`/api/my-cars/${id}`).then(() => {
+          $scope.cars.splice($scope.cars.findIndex((car) => { return car.id === id }), 1)
           // $scope.$apply()
         }).catch((error) => {
           swal('Error!', error.data.message, 'error')

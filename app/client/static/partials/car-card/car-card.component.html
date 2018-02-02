@@ -1,0 +1,14 @@
+<div class="card">
+  <img class="card-img-top" src="static/img/cars/1/1.jpg" alt="Card image cap">
+  <div class="card-body">
+    <p class="card-text">
+      [[ car.make ]] - [[ car.model ]]<br />
+      [[ car.year ]].<br />
+      [[ car.km.toLocaleString() ]] km
+    </p>
+  </div>
+  <div class="card-footer">
+    <small class="text-muted">[[ car.status ]] - [[ car.price.toLocaleString() ]]e</small>
+    <button navigate="[[ '/car/' + car.id ]]" type="button" class="btn btn-info btn-sm float-right">Info</button>
+  </div>
+</div>

@@ -90,50 +90,50 @@ def logout():
     session.pop('user', None)
     return jsonify({'message': 'Successfully logged out'})
 
-@client.route('api/products')
-def get_products():
+@client.route('api/cars')
+def get_cars():
     """
-    Get all products
+    Get all cars
     """
     database = mysql.get_db()
     cursor = database.cursor()
 
-    query = '''SELECT products.id, car_makes.make, car_models.model, products.year,
-    products.price, products.km, products.status FROM products
-    JOIN car_models on products.model_id = car_models.id
+    query = '''SELECT cars.id, car_makes.make, car_models.model, cars.year,
+    cars.price, cars.km, cars.status FROM cars
+    JOIN car_models on cars.model_id = car_models.id
     JOIN car_makes on car_models.make_id = car_makes.id'''
 
     cursor.execute(query)
-    products = cursor.fetchall()
+    cars = cursor.fetchall()
 
-    return jsonify(products)
+    return jsonify(cars)
 
-@client.route('api/products/<int:product_id>')
-def get_product(product_id):
+@client.route('api/cars/<int:car_id>')
+def get_car(car_id):
     """
-    Get product
+    Get car
     """
     database = mysql.get_db()
     cursor = database.cursor()
 
-    query = '''SELECT products.id, car_makes.make, car_models.model, products.year,
-    products.price, products.km, products.status, users.name, users.surname, products.phone,
-    products.address, products.kw, products.hp, products.ccm, products.fuel_type,
-    products.description FROM products
-    JOIN car_models on products.model_id = car_models.id
+    query = '''SELECT cars.id, car_makes.make, car_models.model, cars.year,
+    cars.price, cars.km, cars.status, users.name, users.surname, cars.phone,
+    cars.address, cars.kw, cars.hp, cars.ccm, cars.fuel_type,
+    cars.description FROM cars
+    JOIN car_models on cars.model_id = car_models.id
     JOIN car_makes on car_models.make_id = car_makes.id
-    JOIN users on products.user_id = users.id
-    WHERE products.id = %s'''
+    JOIN users on cars.user_id = users.id
+    WHERE cars.id = %s'''
 
-    cursor.execute(query, (product_id))
-    product = cursor.fetchone()
+    cursor.execute(query, (car_id))
+    car = cursor.fetchone()
 
-    return jsonify(product)
+    return jsonify(car)
 
-@client.route('api/my-products')
-def my_products():
+@client.route('api/my-cars')
+def my_cars():
     """
-    Get my products
+    Get my cars
     """
     if not 'user' in session:
         raise InvalidUsage("Access denied", 401)
@@ -141,24 +141,24 @@ def my_products():
     database = mysql.get_db()
     cursor = database.cursor()
 
-    query = '''SELECT products.id, car_makes.make, car_models.model, products.year,
-    products.price, products.km, products.status, users.name, users.surname, products.phone,
-    products.address, products.kw, products.hp, products.ccm, products.fuel_type,
-    products.description FROM products
-    JOIN car_models on products.model_id = car_models.id
+    query = '''SELECT cars.id, car_makes.make, car_models.model, cars.year,
+    cars.price, cars.km, cars.status, users.name, users.surname, cars.phone,
+    cars.address, cars.kw, cars.hp, cars.ccm, cars.fuel_type,
+    cars.description FROM cars
+    JOIN car_models on cars.model_id = car_models.id
     JOIN car_makes on car_models.make_id = car_makes.id
-    JOIN users on products.user_id = users.id
+    JOIN users on cars.user_id = users.id
     WHERE users.id = %s'''
 
     cursor.execute(query, (session.get('user')['id']))
-    products = cursor.fetchall()
+    cars = cursor.fetchall()
 
-    return jsonify(products)
+    return jsonify(cars)
 
-@client.route('api/my-products/<int:product_id>', methods=['DELETE'])
-def delete_my_product(product_id):
+@client.route('api/my-cars/<int:car_id>', methods=['DELETE'])
+def delete_my_car(car_id):
     """
-    Delete my product
+    Delete my car
     """
     if not 'user' in session:
         raise InvalidUsage("Access denied", 401)
@@ -166,10 +166,10 @@ def delete_my_product(product_id):
     database = mysql.get_db()
     cursor = database.cursor()
 
-    query = '''DELETE FROM products
-    WHERE products.id = %s AND user_id = %s'''
+    query = '''DELETE FROM cars
+    WHERE cars.id = %s AND user_id = %s'''
 
-    numrows = cursor.execute(query, (product_id, session.get('user')['id']))
+    numrows = cursor.execute(query, (car_id, session.get('user')['id']))
     database.commit()
 
     if numrows == 0:

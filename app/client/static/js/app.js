@@ -18,10 +18,15 @@ app.config(($routeProvider, $locationProvider) => {
           return ActiveUserService.hasAccess('guest')
         }
       }
-    }).when('/product/:id', {
-      templateUrl: 'client/static/partials/product/product.component.html'
-    }).when('/my-products', {
-      templateUrl: 'client/static/partials/my-products/my-products.component.html'
+    }).when('/car/:id', {
+      templateUrl: 'client/static/partials/car/car.component.html'
+    }).when('/my-cars', {
+      templateUrl: 'client/static/partials/my-cars/my-cars.component.html',
+      resolve: {
+        auth: (ActiveUserService) => {
+          return ActiveUserService.hasAccess('member')
+        }
+      }
     })
 
   $locationProvider.html5Mode(true)

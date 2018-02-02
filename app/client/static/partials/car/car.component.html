@@ -1,0 +1,64 @@
+<div class="container" ng-controller="CarController">
+  <div class="row">
+    <div class="col">
+      <h1>[[ car.make ]] [[ car.model ]]</h1>
+      <div class="text-muted">[[ car.year ]]. year</div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6 col-sm-12 mb-sm-3">
+      <div id="carImages" class="carousel slide" data-ride="carousel">
+        <ol class="carousel-indicators">
+          <li data-target="#carImages" data-slide-to="0" class="active"></li>
+          <li data-target="#carImages" data-slide-to="1"></li>
+          <li data-target="#carImages" data-slide-to="2"></li>
+        </ol>
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <img class="d-block w-100" src="static/img/cars/1/1.jpg" alt="First slide">
+          </div>
+          <div class="carousel-item">
+            <img class="d-block w-100" src="static/img/cars/1/1.jpg" alt="Second slide">
+          </div>
+          <div class="carousel-item">
+            <img class="d-block w-100" src="static/img/cars/1/1.jpg" alt="Third slide">
+          </div>
+        </div>
+        <a class="carousel-control-prev" href="#carImages" role="button" data-slide="prev">
+          <span class="carousel-control-prev-icon"></span>
+        </a>
+        <a class="carousel-control-next" href="#carImages" role="button" data-slide="next">
+          <span class="carousel-control-next-icon"></span>
+        </a>
+      </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+      <div class="alert alert-success text-right">
+        <h4 class="mb-0">
+          [[ car.price.toLocaleString() ]]e
+        </h4>
+      </div>
+      <div>[[ car.status ]]</div>
+      <div>[[ car.make ]]</div>
+      <div>[[ car.model ]]</div>
+      <div>[[ car.year ]]. year</div>
+      <div>[[ car.km.toLocaleString() ]] km</div>
+      <div>[[ car.kw ]]/[[ car.hp ]] (kW/hp)</div>
+      <div>[[ car.ccm.toLocaleString() ]] ccm<sup>3</sup></div>
+      <div>[[ car.fuel_type ]]</div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+      <address class="border-bottom">
+        <div>[[ car.name ]] [[ car.surname ]]</div>
+        <div style="white-space: pre-wrap;">[[ car.address ]]</div>
+        <a href="tel:[[ car.phone ]]">[[ car.phone ]]</a>
+      </address>
+      <img src="http://via.placeholder.com/300x200" alt="Place for Your ad" class="rounded img-fluid">
+    </div>
+  </div>
+  <div class="row border-top mt-3 pt-3">
+    <div class="col">
+      [[ car.description ]]
+    </div>
+  </div>
+</div>
