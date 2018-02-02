@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 02, 2018 at 08:28 PM
+-- Generation Time: Feb 02, 2018 at 09:31 PM
 -- Server version: 10.1.30-MariaDB
 -- PHP Version: 7.1.13
 
@@ -42,7 +42,8 @@ CREATE TABLE `cars` (
   `fuel_type` enum('Diesel','Gasoline','LPG','Other') COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `phone` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `address` text COLLATE utf8mb4_unicode_ci NOT NULL
+  `address` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `city` text COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------

@@ -3,20 +3,20 @@ app.controller('AddCarController', ($scope, $http, $location) => {
   $scope.models = []
 
   $scope.data = {
-    make: '1',
-    model: '1',
-    year: 2010,
-    mileage: 100,
-    price: 1230,
-    condition: 'New',
-    displacement: 1599,
-    fuel_type: 'LPG',
-    kw: 10,
-    hp: 20,
-    description: 'Bla bla',
-    address: 'adresaaaa',
-    city: 'graaad',
-    phone: '0631234567',
+    make: '',
+    model: '',
+    year: '',
+    mileage: '',
+    price: '',
+    condition: '',
+    displacement: '',
+    fuel_type: '',
+    kw: '',
+    hp: '',
+    description: '',
+    address: '',
+    city: '',
+    phone: '',
     images: null
   }
 

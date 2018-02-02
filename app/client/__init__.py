@@ -124,7 +124,7 @@ def get_car(car_id):
 
     query = '''SELECT cars.id, car_makes.make, car_models.model, cars.year,
     cars.price, cars.km, cars.status, users.name, users.surname, cars.phone,
-    cars.address, cars.kw, cars.hp, cars.ccm, cars.fuel_type,
+    cars.address, cars.city, cars.kw, cars.hp, cars.ccm, cars.fuel_type,
     cars.description
     FROM cars
     JOIN car_models on cars.model_id = car_models.id
@@ -349,6 +349,8 @@ def create_new_car():
         raise InvalidUsage("Phone must not be empty", 422)
     if 'address' not in data or not data['address']:
         raise InvalidUsage("Address must not be empty", 422)
+    if 'city' not in data or not data['city']:
+        raise InvalidUsage("City must not be empty", 422)
 
     images = request.files.getlist('images')
     if len(images) == 0:
@@ -359,7 +361,7 @@ def create_new_car():
             raise InvalidUsage("Image must be jpg/jpeg/bmp/png", 422)
 
     allowed_condition = [ 'New', 'Used' ]
-    allowed_fuel_type = [ 'Diesel', 'Gasolne', 'LPG', 'Other' ]
+    allowed_fuel_type = [ 'Diesel', 'Gasoline', 'LPG', 'Other' ]
 
     query = '''SELECT id
     FROM car_models
@@ -387,14 +389,14 @@ def create_new_car():
 
 
     query = '''INSERT INTO
-    cars(model_id, user_id, year, price, km, status, kw, hp, ccm, fuel_type, description, phone, address)
-    VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)'''
+    cars(model_id, user_id, year, price, km, status, kw, hp, ccm, fuel_type, description, phone, address, city)
+    VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)'''
 
     cursor.execute(query,
                   (data['model'], session.get('user')['id'], data['year'],
                   data['price'], data['mileage'], data['condition'], data['kw'],
                   data['hp'], data['displacement'], data['fuel_type'], data['description'],
-                  data['phone'], data['address']))
+                  data['phone'], data['address'], data['city']))
     database.commit()
     car_id = cursor.lastrowid
 
