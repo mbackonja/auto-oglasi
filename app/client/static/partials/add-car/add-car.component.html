@@ -4,32 +4,27 @@
       <form ng-submit="login()">
         <div class="form-row">
           <div class="form-group col-6">
-            <label for="make">Make</label>
-            <select class="custom-select" id="make">
-                <option selected>Select car make</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
+            <label for="make">Make [[ data.make ]]</label>
+            <select class="custom-select" id="make" ng-model="data.make" required>
+                <option value="">Select car make</option>
+                <option ng-repeat="make in makes" value="[[ make.id ]]">[[ make.make ]]</option>
               </select>
           </div>
           <div class="form-group col-6">
             <label for="model">Model</label>
-            <select class="custom-select" id="model">
-              <option selected>Select car model</option>
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
-            </select>
+            <select class="custom-select" id="model" ng-model="data.model" ng-disabled="!data.make" required>
+              <option value="">Select car model</option>
+              <option ng-repeat="model in models | filter: { make_id: data.make }" value="[[ model.id ]]">[[ model.model ]]</option>            </select>
           </div>
         </div>
         <div class="form-group">
           <label for="year">Year</label>
-          <input type="number" class="form-control" id="year" placeholder="Enter year of manufacture">
+          <input type="number" class="form-control" id="year" min="0" placeholder="Enter year of manufacture" required>
         </div>
         <div class="form-group">
           <label for="mileage">Mileage</label>
           <div class="input-group">
-            <input type="number" class="form-control" id="mileage" placeholder="Enter mileage">
+            <input type="number" class="form-control" id="mileage" min="0" placeholder="Enter mileage" required>
             <div class="input-group-append">
               <span class="input-group-text">km</span>
             </div>
@@ -39,7 +34,7 @@
           <div class="form-group col-7">
             <label for="price">Price</label>
             <div class="input-group">
-              <input type="number" class="form-control" id="price" placeholder="Enter price">
+              <input type="number" class="form-control" id="price" min="0" placeholder="Enter price" required>
               <div class="input-group-append">
                 <span class="input-group-text">€</span>
               </div>
@@ -47,8 +42,8 @@
           </div>
           <div class="form-group col-5">
             <label for="condition">Condition</label>
-            <select class="custom-select" id="condition">
-              <option selected>Select car condition</option>
+            <select class="custom-select" id="condition" required>
+              <option value="">Select car condition</option>
               <option value="1">New</option>
               <option value="2">Used</option>
             </select>
@@ -58,7 +53,7 @@
           <div class="form-group col-7">
             <label for="displacement">Displacement</label>
             <div class="input-group">
-              <input type="number" class="form-control" id="displacement" placeholder="Enter engine displacement">
+              <input type="number" class="form-control" id="displacement" min="0" placeholder="Enter engine displacement" required>
               <div class="input-group-append">
                 <span class="input-group-text">ccm<sup>3</sup></span>
               </div>
@@ -66,8 +61,8 @@
           </div>
           <div class="form-group col-5">
             <label for="fuel_type">Fuel type</label>
-            <select class="custom-select" id="fuel_type">
-              <option selected>Select fuel type</option>
+            <select class="custom-select" id="fuel_type" required>
+              <option value="">Select fuel type</option>
               <option value="1">Diesel</option>
               <option value="2">Gasoline</option>
               <option value="3">LPG</option>
@@ -79,7 +74,7 @@
           <div class="form-group col-6">
             <label for="kw">kW</label>
             <div class="input-group">
-              <input type="number" class="form-control" id="kw" placeholder="Enter kW">
+              <input type="number" class="form-control" id="kw" min="0" placeholder="Enter kW" required>
               <div class="input-group-append">
                 <span class="input-group-text">kw</span>
               </div>
@@ -88,7 +83,7 @@
           <div class="form-group col-6">
             <label for="kw">hp</label>
             <div class="input-group">
-              <input type="number" class="form-control" id="kw" placeholder="Enter hp">
+              <input type="number" class="form-control" id="kw" min="0" placeholder="Enter hp" required>
               <div class="input-group-append">
                 <span class="input-group-text">hp</span>
               </div>
@@ -97,20 +92,20 @@
         </div>
         <div class="form-group">
           <label for="description">Description</label>
-          <textarea class="form-control" id="description" rows="3" placeholder="Enter car description"></textarea>
+          <textarea class="form-control" id="description" rows="3" placeholder="Enter car description" required></textarea>
         </div>
         <div class="form-row">
           <div class="form-group col-6">
             <label for="address">Address</label>
-            <input type="text" class="form-control" id="address" placeholder="Enter address">
+            <input type="text" class="form-control" id="address" placeholder="Enter address" required>
           </div>
           <div class="form-group col-3">
             <label for="city">City</label>
-            <input type="text" class="form-control" id="city" placeholder="Enter city">
+            <input type="text" class="form-control" id="city" placeholder="Enter city" required>
           </div>
           <div class="form-group col-3">
             <label for="phone-number">Phone number</label>
-            <input type="text" class="form-control" id="phone-number" placeholder="Enter phone">
+            <input type="text" class="form-control" id="phone-number" placeholder="Enter phone" required>
           </div>
         </div>
         <button type="submit" class="btn btn-primary">Add</button>

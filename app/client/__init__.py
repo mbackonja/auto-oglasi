@@ -276,3 +276,26 @@ def update_user_login_data():
     session['user'] = activeUser
 
     return jsonify({'message': 'Successfully updated'}), 200
+
+@client.route('api/makes-and-models')
+def get_cars_makes_and_models():
+    """
+    Get all car makes and models
+    """
+    database = mysql.get_db()
+    cursor = database.cursor()
+
+    query = '''SELECT *
+    FROM car_models'''
+
+    cursor.execute(query)
+    car_models = cursor.fetchall()
+
+    query = '''SELECT *
+    FROM car_makes'''
+
+    cursor.execute(query)
+    car_makes = cursor.fetchall()
+    response = { 'makes': car_makes, 'models': car_models }
+
+    return jsonify(response)
