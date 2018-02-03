@@ -6,15 +6,16 @@
           <div class="form-group col-sm-6 col-12">
             <label for="make">Make</label>
             <select class="custom-select" id="make" ng-model="data.make" required>
-                <option value="">Select car make</option>
-                <option ng-repeat="make in makes" value="[[ make.id ]]">[[ make.make ]]</option>
-              </select>
+              <option value="">Select car make</option>
+              <option ng-repeat="make in makes" value="[[ make.id ]]">[[ make.make ]]</option>
+            </select>
           </div>
           <div class="form-group col-sm-6 col-12">
             <label for="model">Model</label>
             <select class="custom-select" id="model" ng-model="data.model" ng-disabled="!data.make" required>
               <option value="">Select car model</option>
-              <option ng-repeat="model in models | filter: { make_id: data.make }" value="[[ model.id ]]">[[ model.model ]]</option>            </select>
+              <option ng-repeat="model in models | filter: { make_id: data.make }" value="[[ model.id ]]">[[ model.model ]]</option>
+            </select>
           </div>
         </div>
         <div class="form-group">

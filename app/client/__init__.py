@@ -485,3 +485,56 @@ def delete_car_image(car_id, image_id):
     database.commit()
 
     return jsonify({'message': 'Successfully deleted'}), 200
+
+@client.route('api/cars/search', methods=['POST'])
+def car_search():
+    """
+    Search cars
+    """
+    data = request.json
+    database = mysql.get_db()
+    cursor = database.cursor()
+
+    query = '''SELECT cars.id, car_makes.make, car_models.model, cars.year,
+    cars.price, cars.km, cars.status, cars_images.path as image_path
+    FROM cars
+    JOIN car_models on cars.model_id = car_models.id
+    JOIN car_makes on car_models.make_id = car_makes.id
+    JOIN cars_images on cars.id = cars_images.car_id'''
+
+    whereData = []
+
+    if 'make' in data and len(data['make']) > 0:
+        query += ' WHERE car_makes.id = %s'
+        whereData.append(data['make'])
+
+    if 'model' in data and len(data['model']) > 0:
+        if len(whereData) > 0:
+            query += ' AND'
+        else:
+            query += ' WHERE'
+        query += ' car_models.id = %s'
+        whereData.append(data['model'])
+
+    if 'priceFrom' in data and str(data['priceFrom']).isdigit():
+        if len(whereData) > 0:
+            query += ' AND'
+        else:
+            query += ' WHERE'
+        query += ' cars.price >= %s'
+        whereData.append(data['priceFrom'])
+
+    if 'priceTo' in data and str(data['priceTo']).isdigit():
+        if len(whereData) > 0:
+            query += ' AND'
+        else:
+            query += ' WHERE'
+        query += ' cars.price <= %s'
+        whereData.append(data['priceTo'])
+
+    query += ' GROUP BY cars.id'
+    print(query)
+    cursor.execute(query, tuple(whereData))
+    cars = cursor.fetchall()
+
+    return jsonify(cars)
