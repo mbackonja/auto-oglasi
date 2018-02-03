@@ -1,5 +1,5 @@
 <div class="card">
-  <img class="card-img-top" ng-src="static/img/cars/[[ car.id ]]/[[ car.image_path ]]">
+  <div class="img-holder" ng-style="{ 'background-image': 'url(static/img/cars/' + car.id + '/' + car.image_path + ')'}"></div>
   <div class="card-body">
     <p class="card-text">
       [[ car.make ]] - [[ car.model ]]<br />
@@ -9,6 +9,6 @@
   </div>
   <div class="card-footer">
     <small class="text-muted">[[ car.status ]] - [[ car.price.toLocaleString() ]]€</small>
-    <button navigate="[[ '/car/' + car.id ]]" type="button" class="btn btn-info btn-sm float-right">Info</button>
+    <button navigate="[[ '/view-car/' + car.id ]]" type="button" class="btn btn-info btn-sm float-right">Info</button>
   </div>
 </div>

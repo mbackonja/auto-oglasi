@@ -5,3 +5,11 @@ body {
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
   display: none !important;
 }
+
+.card .img-holder {
+  position: relative;
+  padding-top: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}

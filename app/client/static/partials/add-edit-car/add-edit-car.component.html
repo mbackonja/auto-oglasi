@@ -1,7 +1,7 @@
-<div class="container" ng-controller="AddCarController">
+<div class="container" ng-controller="AddEditCarController">
   <div class="row justify-content-center">
     <div class="col-lg-6 col-md-8 col-sm-10">
-      <form ng-submit="create()">
+      <form ng-submit="addOrCreate()">
         <div class="form-row">
           <div class="form-group col-sm-6 col-12">
             <label for="make">Make</label>
@@ -110,13 +110,13 @@
         </div>
         <div class="form-group">
             <label for="images">Images</label>
-            <input type="file" class="form-control-file" id="images" ng-file-model="data.images" accept="image/*" multiple required>
+            <input type="file" class="form-control-file" id="images" ng-file-model="data.images" accept="image/*" multiple ng-required="action !== 'edit'">
             <div class="mt-3">
                 <img ng-repeat="image in data.images" ng-src="[[ image.url ]]" class="img-thumbnail" style="width: 5rem;">
             </div>
         </div>
 
-        <button type="submit" class="btn btn-primary btn-block">Add car</button>
+        <button type="submit" class="btn btn-primary btn-block">[[ action === 'edit' ? 'Edit' : 'Add' ]] car</button>
       </form>
     </div>
   </div>

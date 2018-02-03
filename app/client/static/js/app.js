@@ -27,7 +27,7 @@ app.config(($routeProvider, $locationProvider) => {
         }
       }
     })
-    .when('/car/:id', {
+    .when('/view-car/:id', {
       templateUrl: 'client/static/partials/car/car.component.html'
     })
     .when('/my-cars', {
@@ -38,8 +38,8 @@ app.config(($routeProvider, $locationProvider) => {
         }
       }
     })
-    .when('/add-car', {
-      templateUrl: 'client/static/partials/add-car/add-car.component.html',
+    .when('/car/:action/:id?', {
+      templateUrl: 'client/static/partials/add-edit-car/add-edit-car.component.html',
       resolve: {
         auth: (ActiveUserService) => {
           return ActiveUserService.hasAccess('member')
