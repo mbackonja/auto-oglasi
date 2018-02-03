@@ -8,8 +8,9 @@ from app.common.mysql import mysql
 from app.common.invalid_usage_exception import InvalidUsage
 from app.common.file_helper import is_allowed_file
 from werkzeug.utils import secure_filename
-import os
 from datetime import datetime
+import shutil
+import os
 
 client = Blueprint('client', __name__, template_folder='templates', static_folder='static',  # pylint: disable=invalid-name
                    static_url_path='client/static')
@@ -184,14 +185,27 @@ def delete_my_car(car_id):
     database = mysql.get_db()
     cursor = database.cursor()
 
-    query = '''DELETE FROM cars
+    query = '''SELECT id
+    FROM cars
     WHERE cars.id = %s AND user_id = %s'''
-
     numrows = cursor.execute(query, (car_id, session.get('user')['id']))
-    database.commit()
-
     if numrows == 0:
         raise InvalidUsage('You don\'t have permission', 401)
+
+
+    image_path = os.path.join(os.path.abspath('app/static/img/cars'), str(car_id))
+    shutil.rmtree(image_path)
+
+
+    query = '''DELETE FROM cars_images
+    WHERE cars_images.car_id = %s'''
+    cursor.execute(query, (car_id))
+    database.commit()
+
+    query = '''DELETE FROM cars
+    WHERE cars.id = %s'''
+    cursor.execute(query, (car_id))
+    database.commit()
 
     return jsonify({'message': 'Successfully deleted'}), 200
 
