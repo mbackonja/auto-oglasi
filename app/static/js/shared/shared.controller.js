@@ -58,6 +58,7 @@ app.factory('ActiveUserService', ($q) => {
     $scope.logout = () => {
       $http.post('/api/logout').then((response) => {
         ActiveUserService.setActiveUser(null)
+        $location.path('/')
       })
     }
   })
