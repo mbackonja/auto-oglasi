@@ -8,7 +8,7 @@ from app.common.mysql import mysql
 from app.common.invalid_usage_exception import InvalidUsage
 from app.common.file_helper import is_allowed_file
 from werkzeug.utils import secure_filename
-from os import path, makedirs
+import os
 from datetime import datetime
 
 client = Blueprint('client', __name__, template_folder='templates', static_folder='static',  # pylint: disable=invalid-name
@@ -125,7 +125,7 @@ def get_car(car_id):
     query = '''SELECT cars.id, car_makes.make, car_models.model, cars.year,
     cars.price, cars.km, cars.status, users.name, users.surname, cars.phone,
     cars.address, cars.city, cars.kw, cars.hp, cars.ccm, cars.fuel_type,
-    cars.description
+    cars.description, car_models.id as model_id, car_makes.id as make_id
     FROM cars
     JOIN car_models on cars.model_id = car_models.id
     JOIN car_makes on car_models.make_id = car_makes.id
@@ -317,13 +317,15 @@ def get_cars_makes_and_models():
     return jsonify(response)
 
 @client.route('api/cars', methods=['POST'])
-def create_new_car():
+@client.route('api/cars/<int:car_id>', methods=['PUT'])
+def create_new_car(car_id = None):
     """
     Create new car
     """
     if not 'user' in session:
         raise InvalidUsage("Access denied", 401)
 
+    isEditMode = True if car_id else False
     data = request.form
     database = mysql.get_db()
     cursor = database.cursor()
@@ -356,8 +358,9 @@ def create_new_car():
         raise InvalidUsage("City must not be empty", 422)
 
     images = request.files.getlist('images')
-    if len(images) == 0:
-        raise InvalidUsage("Must upload at least one image", 422)
+    if not isEditMode: # if it's create mode
+        if len(images) == 0:
+            raise InvalidUsage("Must upload at least one image", 422)
 
     for image in images:
         if not is_allowed_file(image.filename):
@@ -390,22 +393,33 @@ def create_new_car():
     if not data['fuel_type'] or not data['fuel_type'] in allowed_fuel_type:
         raise InvalidUsage("Fuel type invalid", 422)
 
+    if not isEditMode: # If it's create mode
+        query = '''INSERT INTO
+        cars(model_id, user_id, year, price, km, status, kw, hp, ccm, fuel_type, description, phone, address, city)
+        VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)'''
 
-    query = '''INSERT INTO
-    cars(model_id, user_id, year, price, km, status, kw, hp, ccm, fuel_type, description, phone, address, city)
-    VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)'''
+        cursor.execute(query,
+                    (data['model'], session.get('user')['id'], data['year'],
+                    data['price'], data['mileage'], data['condition'], data['kw'],
+                    data['hp'], data['displacement'], data['fuel_type'], data['description'],
+                    data['phone'], data['address'], data['city']))
+        database.commit()
+        car_id = cursor.lastrowid
+    else:
+        query = '''UPDATE cars
+        SET model_id = %s, user_id = %s, year = %s, price = %s, km = %s, status = %s, kw = %s, hp = %s, ccm = %s, fuel_type = %s, description = %s, phone = %s, address = %s, city = %s
+        WHERE cars.id = %s'''
 
-    cursor.execute(query,
-                  (data['model'], session.get('user')['id'], data['year'],
-                  data['price'], data['mileage'], data['condition'], data['kw'],
-                  data['hp'], data['displacement'], data['fuel_type'], data['description'],
-                  data['phone'], data['address'], data['city']))
-    database.commit()
-    car_id = cursor.lastrowid
+        cursor.execute(query,
+                    (data['model'], session.get('user')['id'], data['year'],
+                    data['price'], data['mileage'], data['condition'], data['kw'],
+                    data['hp'], data['displacement'], data['fuel_type'], data['description'],
+                    data['phone'], data['address'], data['city'], car_id))
+        database.commit()
 
-    image_path = path.join(path.abspath('app/static/img/cars'), str(cursor.lastrowid))
-    if not path.exists(image_path):
-        makedirs(image_path)
+    image_path = os.path.join(os.path.abspath('app/static/img/cars'), str(car_id))
+    if not os.path.exists(image_path):
+        os.makedirs(image_path)
 
     query = '''INSERT INTO
     cars_images(car_id, path)
@@ -415,8 +429,45 @@ def create_new_car():
 
     for image in images:
         filename = secure_filename(image.filename)
-        image.save(path.join(image_path, filename))
+        image.save(os.path.join(image_path, filename))
         cursor.execute(query, (car_id, filename))
         database.commit()
 
-    return jsonify({'message': 'Successfully added'}), 201
+    if isEditMode:
+        return jsonify({'message': 'Successfully edited'}), 200
+    else:
+        return jsonify({'message': 'Successfully added'}), 201
+        
+
+@client.route('api/cars/<int:car_id>/images/<int:image_id>', methods=['DELETE'])
+def delete_car_image(car_id, image_id):
+    """
+    Delete car image
+    """
+    if not 'user' in session:
+        raise InvalidUsage("Access denied", 401)
+
+    database = mysql.get_db()
+    cursor = database.cursor()
+
+    query = '''SELECT path
+    FROM cars_images
+    JOIN cars on cars_images.car_id = cars.id
+    WHERE cars.user_id = %s AND cars_images.id = %s and cars.id = %s'''
+
+    cursor.execute(query, (session.get('user')['id'], image_id, car_id))
+    image = cursor.fetchone()
+
+    if not image:
+        raise InvalidUsage('Image don\'t exists', 404)
+
+    image_path = os.path.join(os.path.abspath('app/static/img/cars'), str(car_id), image['path'])
+    os.remove(image_path)
+
+    query = '''DELETE FROM cars_images
+    WHERE cars_images.id = %s'''
+
+    cursor.execute(query, (image_id))
+    database.commit()
+
+    return jsonify({'message': 'Successfully deleted'}), 200

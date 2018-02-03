@@ -3,3 +3,4 @@ venv
 .vscode
 node_modules
 app/settings.cfg
+app/static/img/cars
