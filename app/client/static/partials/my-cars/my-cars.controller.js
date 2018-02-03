@@ -19,7 +19,7 @@ app.controller('MyCarsController', ($scope, $http) => {
     }, (willDelete) => {
       if (willDelete) {
         $http.delete(`/api/my-cars/${id}`).then(() => {
-          $scope.cars.splice($scope.cars.findIndex((car) => { return car.id === id }), 1)
+          $scope.cars.splice($scope.cars.findIndex((car) => { return car.id == id }), 1)
         }).catch((error) => {
           swal('Error!', error.data.message, 'error')
         })
