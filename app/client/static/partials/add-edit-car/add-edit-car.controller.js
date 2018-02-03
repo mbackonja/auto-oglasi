@@ -22,8 +22,17 @@ app.controller('AddEditCarController', ($scope, $http, $location, $routeParams) 
     images: null
   }
 
+  $scope.uploadedImages = null
+
   if ($scope.action === 'edit') {
     $http.get(`/api/cars/${$routeParams.id}`).then((response) => {
+      $scope.uploadedImages = response.data.images.map((image) => {
+        return {
+          id: image.id,
+          url: `static/img/cars/${$routeParams.id}/${image.path}`
+        }
+      })
+
       $scope.data = {
         make: response.data.make_id.toString(),
         model: response.data.model_id.toString(),
@@ -70,7 +79,7 @@ app.controller('AddEditCarController', ($scope, $http, $location, $routeParams) 
     if ($scope.action === 'edit') {
       return $http.put(`/api/cars/${$routeParams.id}`, formData, config).then((response) => {
         swal({ title: 'Success!', text: response.data.message, type: 'success' }, () => {
-          $location.path('/')
+          $location.path('/my-cars')
           $scope.$apply()
         })
       }).catch((error) => {
@@ -80,9 +89,18 @@ app.controller('AddEditCarController', ($scope, $http, $location, $routeParams) 
 
     $http.post('/api/cars', formData, config).then((response) => {
       swal({ title: 'Success!', text: response.data.message, type: 'success' }, () => {
-        $location.path('/')
+        $location.path('/my-cars')
         $scope.$apply()
       })
+    }).catch((error) => {
+      swal('Error!', error.data.message, 'error')
+    })
+  }
+
+  $scope.deleteImage = (imageId) => {
+    return $http.delete(`/api/cars/${$routeParams.id}/images/${imageId}`).then((response) => {
+      swal({ title: 'Success!', text: response.data.message, type: 'success' })
+      $scope.uploadedImages.splice($scope.uploadedImages.findIndex((image) => { return image.id == imageId }), 1)
     }).catch((error) => {
       swal('Error!', error.data.message, 'error')
     })

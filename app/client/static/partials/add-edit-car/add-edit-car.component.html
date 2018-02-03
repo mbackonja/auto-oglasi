@@ -112,8 +112,26 @@
             <label for="images">Images</label>
             <input type="file" class="form-control-file" id="images" ng-file-model="data.images" accept="image/*" multiple ng-required="action !== 'edit'">
             <div class="mt-3">
-                <img ng-repeat="image in data.images" ng-src="[[ image.url ]]" class="img-thumbnail" style="width: 5rem;">
+              <img ng-repeat="image in data.images" ng-src="[[ image.url ]]" class="img-thumbnail" style="width: 5rem;">
             </div>
+        </div>
+
+        <div ng-if="action === 'edit'" class="form-group">
+          <label>Already uploaded images</label><br />
+          <table class="table table-sm">
+            <thead>
+              <tr>
+                <th scope="col">Image</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="image in uploadedImages">
+                <th scope="row"><img ng-src="[[ image.url ]]" class="img-thumbnail" style="width: 5rem;"></th>
+                <td><button type="button" ng-click="deleteImage([[ image.id ]])" class="btn btn-danger btn-sm">Delete</button></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
 
         <button type="submit" class="btn btn-primary btn-block">[[ action === 'edit' ? 'Edit' : 'Add' ]] car</button>
