@@ -13,3 +13,17 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
 }
+
+.carousel-inner {
+  padding-top: 75%;
+  background: #e4e4e4;
+  border: 1px solid;
+}
+
+.carousel-item {
+  top: 0;
+}
+
+.carousel img {
+  object-fit: contain;
+}

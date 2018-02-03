@@ -7,13 +7,13 @@
   </div>
   <div class="row">
     <div class="col-md-6 col-sm-12 mb-sm-3">
-      <div id="carImages" class="carousel slide" data-ride="carousel">
+      <div id="carImages" class="carousel slide">
         <ol class="carousel-indicators">
           <li ng-repeat="image in car.images" data-target="#carImages" data-slide-to="[[ $index ]]" ng-class='{active:$first}'></li>
         </ol>
-        <div class="carousel-inner">
-          <div ng-repeat="image in car.images" class="carousel-item" ng-class='{active:$first}'>
-            <img class="d-block w-100" ng-src="static/img/cars/[[ car.id ]]/[[ image.path ]]">
+        <div class="carousel-inner rounded">
+          <div ng-repeat="image in car.images" class="carousel-item position-absolute w-100 h-100" ng-class='{active:$first}'>
+            <img class="d-block w-100 h-100" ng-src="static/img/cars/[[ car.id ]]/[[ image.path ]]">
           </div>
         </div>
         <a class="carousel-control-prev" href="#carImages" role="button" data-slide="prev">
