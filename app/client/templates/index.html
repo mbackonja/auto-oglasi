@@ -42,6 +42,7 @@
           </a>
           <div class="dropdown-menu">
             <a class="dropdown-item" ng-class="{ active: isActive('/my-profile')}" href="/my-profile">Profile</a>
+            <a class="dropdown-item" ng-if="isLogged() && getActiveUser().is_admin" ng-class="{ active: isActive('/admin-panel')}" href="/admin-panel">Admin panel</a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="#" ng-click="logout()">Logout</a>
           </div>
@@ -73,5 +74,8 @@
   <script src="{{ url_for('client.static', filename='partials/my-cars/my-cars.controller.js') }}"></script>
   <script src="{{ url_for('client.static', filename='partials/my-profile/my-profile.controller.js') }}"></script>
   <script src="{{ url_for('client.static', filename='partials/add-edit-car/add-edit-car.controller.js') }}"></script>
+
+  <script src="{{ url_for('admin.static', filename='js/app.js') }}"></script>
+  <script src="{{ url_for('admin.static', filename='partials/admin-cars/admin-cars.controller.js') }}"></script>
 </body>
 </html>
