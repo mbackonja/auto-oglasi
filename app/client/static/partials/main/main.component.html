@@ -58,6 +58,10 @@
   </div>
 
   <div class="row">
+    <div class="alert alert-warning w-100" role="alert" ng-if="!cars.length">
+      There are no cars to show!
+    </div>
+
     <carcard class="w-25 p-2 col-lg-3 col-md-4 col-sm-6 col-12" ng-repeat="car in cars" car="car"></carcard>
   </div>
 </div>

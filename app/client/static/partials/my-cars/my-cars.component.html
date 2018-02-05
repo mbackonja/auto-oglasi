@@ -1,6 +1,10 @@
 <div class="container" ng-controller="MyCarsController">
   <div class="row">
-    <table class="table table-responsive-md">
+    <div class="alert alert-warning w-100" role="alert" ng-if="!cars.length">
+      There are no cars to show!
+    </div>
+
+    <table class="table table-responsive-md" ng-if="cars.length">
       <thead>
         <tr>
           <th scope="col">Image</th>
