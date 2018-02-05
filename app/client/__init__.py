@@ -16,6 +16,13 @@ client = Blueprint('client', __name__, template_folder='templates', static_folde
                    static_url_path='client/static')
 
 bcrypt = Bcrypt()  # pylint: disable=invalid-name
+
+
+allowed_condition = [ 'New', 'Used' ]
+allowed_fuel_type = [ 'Diesel', 'Gasoline', 'LPG', 'Other' ]
+allowed_sort_columns = [ 'id', 'price', 'year']
+allowed_sort_directions = [ 'asc', 'desc' ]
+
 @client.route('/')
 def index():
     """
@@ -381,9 +388,6 @@ def create_new_car(car_id = None):
         if not is_allowed_file(image.filename):
             raise InvalidUsage("Image must be jpg/jpeg/bmp/png", 422)
 
-    allowed_condition = [ 'New', 'Used' ]
-    allowed_fuel_type = [ 'Diesel', 'Gasoline', 'LPG', 'Other' ]
-
     query = '''SELECT id
     FROM car_models
     WHERE id = %s'''
@@ -503,39 +507,52 @@ def car_search():
     JOIN car_makes on car_models.make_id = car_makes.id
     JOIN cars_images on cars.id = cars_images.car_id'''
 
-    whereData = []
+    queryData = []
 
     if 'make' in data and len(data['make']) > 0:
         query += ' WHERE car_makes.id = %s'
-        whereData.append(data['make'])
+        queryData.append(data['make'])
 
     if 'model' in data and len(data['model']) > 0:
-        if len(whereData) > 0:
+        if len(queryData) > 0:
             query += ' AND'
         else:
             query += ' WHERE'
         query += ' car_models.id = %s'
-        whereData.append(data['model'])
+        queryData.append(data['model'])
 
     if 'priceFrom' in data and str(data['priceFrom']).isdigit():
-        if len(whereData) > 0:
+        if len(queryData) > 0:
             query += ' AND'
         else:
             query += ' WHERE'
         query += ' cars.price >= %s'
-        whereData.append(data['priceFrom'])
+        queryData.append(data['priceFrom'])
 
     if 'priceTo' in data and str(data['priceTo']).isdigit():
-        if len(whereData) > 0:
+        if len(queryData) > 0:
             query += ' AND'
         else:
             query += ' WHERE'
         query += ' cars.price <= %s'
-        whereData.append(data['priceTo'])
+        queryData.append(data['priceTo'])
+
+    if 'fuelType' in data and data['fuelType'] in allowed_fuel_type:
+        if len(queryData) > 0:
+            query += ' AND'
+        else:
+            query += ' WHERE'
+        query += ' cars.fuel_type = %s'
+        queryData.append(data['fuelType'])
 
     query += ' GROUP BY cars.id'
-    print(query)
-    cursor.execute(query, tuple(whereData))
+
+    if 'sortBy' in data:
+        sortData = data['sortBy'].split('-')
+        if sortData[0] in allowed_sort_columns and sortData[1] in allowed_sort_directions:
+            query += ' ORDER BY ' + sortData[0] + ' ' + sortData[1]
+
+    cursor.execute(query, tuple(queryData))
     cars = cursor.fetchall()
 
     return jsonify(cars)

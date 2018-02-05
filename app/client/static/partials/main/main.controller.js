@@ -6,7 +6,9 @@ app.controller('MainController', ($scope, $http) => {
     make: '',
     model: '',
     priceFrom: '',
-    priceTo: ''
+    priceTo: '',
+    fuelType: '',
+    sortBy: 'id-asc'
   }
 
   $http.get('/api/makes-and-models').then((response) => {
@@ -25,7 +27,9 @@ app.controller('MainController', ($scope, $http) => {
       make: '',
       model: '',
       priceFrom: '',
-      priceTo: ''
+      priceTo: '',
+      fuelType: '',
+      sortBy: 'id-asc'
     }
 
     getAllCars()
