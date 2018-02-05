@@ -46,6 +46,10 @@ app.config(($routeProvider, $locationProvider) => {
         }
       }
     })
+    .when('/404', {
+      template: '<h1>Not found</h1>'
+    })
+    .otherwise({ redirectTo: '/404' })
 
   $locationProvider.html5Mode(true)
 })

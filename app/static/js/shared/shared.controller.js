@@ -110,3 +110,17 @@ app.factory('ActiveUserService', ($q) => {
       }
     }
   }])
+  .factory('httpInterceptor', ['$q', '$location', ($q, $location) => {
+    return {
+      responseError: (rejectReason) => {
+        if (rejectReason.status === 404) {
+          $location.path('/404/')
+        }
+
+        return $q.reject(rejectReason)
+      }
+    }
+  }])
+  .config(($httpProvider) => {
+    $httpProvider.interceptors.push('httpInterceptor')
+  })

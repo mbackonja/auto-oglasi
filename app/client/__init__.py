@@ -143,6 +143,9 @@ def get_car(car_id):
     cursor.execute(query, (car_id))
     car = cursor.fetchone()
 
+    if not car:
+        raise InvalidUsage('Car don\'t exists', 404)
+
     query = '''SELECT id, path
     FROM cars_images
     WHERE car_id = %s'''
