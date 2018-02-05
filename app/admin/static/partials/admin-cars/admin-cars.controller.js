@@ -9,7 +9,6 @@ app.directive('admincars', () => {
 })
 
 app.controller('AdminCarsController', ($scope, $http, $location, ActiveUserService) => {
-  $scope.nesto = 'asd'
   $scope.cars = []
 
   $http.get('/admin/api/cars').then((response) => {
