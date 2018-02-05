@@ -58,7 +58,7 @@ def register():
 
     database.commit()
     session['user'] = {'id': cursor.lastrowid, 'name': data['name'], 'surname': data['surname'],
-                       'email': data['email']}
+                       'email': data['email'], 'is_admin': False}
     return jsonify({'message': 'Successfully registered'}), 201
 
 @client.route('api/login', methods=['POST'])
@@ -83,7 +83,8 @@ def login():
     if not bcrypt.check_password_hash(row['password'], data['password']):
         raise InvalidUsage("Wrong email or password", 401)
 
-    user = {'id': row['id'], 'name': row['name'], 'surname': row['surname'], 'email': row['email']}
+    user = {'id': row['id'], 'name': row['name'], 'surname': row['surname'],
+            'email': row['email'], 'is_admin': row['is_admin']}
     session['user'] = user
     return jsonify(user)
 
